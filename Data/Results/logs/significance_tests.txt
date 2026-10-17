@@ -102,9 +102,4 @@ common Aref 13000 S2 12.60 +- 0.71
  "ratio_amp_and_noise_corrected": 0.303,
  "note": "hum at 63 Hz nominal is removed by the 20 Hz Butterworth used for eps_rms, so the 1.4 mV raw noise contributes only the filtered residual in quadrature; H2/H1 extrapolation outside the low-R range (0.32-0.35)"
 }
-S1 [(0, 11.7, 10.84, 1.08), (33.6, 17.3, 11.95, 1.45), (81.4, 16.1, 12.09, 1.33), (324, 13.3, 12.31, 1.08), (3180, 11.6, 11.74, 0.99), (9610, 11.8, 12.47, 0.95)]
-S1 ratio video/EMF_true mean 1.146 sd 0.199 sem 0.081; vs nominal peak 0.760; corr 0.26
-S2 [(0, 11.6, 14.88, 0.78), (33.3, 15.7, 13.95, 1.13), (84.1, 13.6, 11.86, 1.15), (327, 14.7, 13.26, 1.11), (3190, 10.5, 13.21, 0.79), (9670, 12.1, 13.72, 0.88)]
-S2 ratio video/EMF_true mean 0.973 sd 0.173 sem 0.070; vs nominal peak 0.630; corr -0.16
-ALL mean 1.059 sd 0.199 sem 0.058 n=12; t vs 1: p=0.326
-median 1.079943527107835
+amplitude-matched c: {'A_ref_uV': 14748, 'c': 0.0112, 'c_err': 0.0103, 't_vs_pred': 1.86, 'p_one_sided_t6': 0.056, 'leverage': [0.48, 0.48, 0.13, 0.14, 0.18, 0.19, 0.2, 0.2]}

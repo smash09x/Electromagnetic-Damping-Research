@@ -18,7 +18,7 @@ STEPS = [
     ("transduction_model.py",     "Physical transduction-model fit"),
     ("final_table.py",            "Headline estimator, clock-corrected table (Table A1)"),
     ("significance_tests.py",     "1/R fit, significance and 2.2 MOhm divider check"),
-    ("video_check.py",            "Video-tracking cross-check of the clock"),
+    ("video_analysis.py",         "Video tracks: independent clock check and decay of the motion"),
     ("decay_halves.py",           "Early- vs late-half decay rates"),
     ("figures.py",                "Figures"),
 ]

@@ -1,0 +1,3 @@
+spring 1: n=7 f_video=2.0841±0.0096 Hz  s_video=1.2601±0.0058  gamma_video=11.33±0.33 (median 11.18)  EMF-env 11.89  early/late=1.10±0.03
+spring 2: n=10 f_video=1.8660±0.0051 Hz  s_video=1.2588±0.0035  gamma_video=9.68±2.06 (median 10.48)  EMF-env 13.49  early/late=0.74±0.65
+s (video, combined) = 1.2591 ± 0.0030   vs  s (mains hum) = 1.2613
