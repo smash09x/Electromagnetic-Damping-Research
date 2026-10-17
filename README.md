@@ -11,7 +11,7 @@ This repository holds the paper, the raw data, the low-cost data-acquisition sys
 
 ## The result in one paragraph
 
-A magnet oscillating on a spring above a coil should be braked by the current induced in the coil, and the braking should fall as 1/R when you add resistance to the coil circuit. We built a US$43 Raspberry Pi Pico DAQ to measure this. **The damping did not change at all between 15 Ω and 2.2 MΩ.** The cause was the measurement circuit: the coil was closed only through the amplifier's 1 MΩ bias resistor, so about 16 nA flowed and the electromagnetic damping was about a millionth of the total. Separately, **the 50 Hz mains hum in the data showed up at 63 Hz**: the firmware's sampling loop could not keep its 10 µs schedule, so every timestamp was 26% too short. Correcting this made the frequencies agree with the spring constants and with independent video timing.
+A magnet oscillating on a spring above a coil should be braked by the current induced in the coil, and the braking should fall as 1/R when you add resistance to the coil circuit. We built a US$43 Raspberry Pi Pico DAQ to measure this. **The damping did not change at all between 15 Ω and 2.2 MΩ.** The cause was the measurement circuit: the coil was closed only through the amplifier's 1 MΩ bias resistor, so about 16 nA flowed and the electromagnetic damping was a few millionths of the total. Separately, **the 50 Hz mains hum in the data showed up at 63 Hz**: the firmware's sampling loop could not keep its 10 µs schedule, so every timestamp was 26% too short. The correction agrees with independent video timing, and with the spring constants if two spring labels were swapped.
 
 <p align="center"><img src="docs/img/gamma_vs_R.png" width="420" alt="Decay rate versus resistance: flat"> <img src="docs/img/hum.png" width="420" alt="Mains hum appearing at 63 Hz"></p>
 
@@ -53,11 +53,42 @@ cd paper && latexmk -pdf main.tex    # needs TeX Live with apa7, biblatex-apa, b
 | Quality factor Q | 551 ± 24 |
 | Oscillation frequency | 2.08 Hz |
 | Predicted EM share if the loop were closed via the coil | ≈ 17 % (9–25 %) |
-| Fitted 1/R coefficient *c* | (−0.011 ± 0.006) Ω s⁻¹ vs +0.030 predicted (excluded at ≈ 3σ) |
+| Fitted 1/R coefficient *c* | (−0.011 ± 0.006) Ω s⁻¹ vs +0.030 predicted (disfavoured at 2.3–3σ) |
 | DAQ clock factor from mains hum | 1.261 ± 0.013 |
 | DAQ input noise (pre-release, rms) | 29–88 µV, median ≈ 48 µV |
 
-KNOWN_ISSUES_PLACEHOLDER
+## Known issues and recommended fixes
+
+- **Open-loop coil.** The coil returns only through R5 (1 M) to the 1.65 V node, so the loop current is about 16 nA and a series R_ext does nothing. Fix: put R_load across the coil terminals (Kelvin connection), or feed the coil into a transimpedance input (coil and R_ext between 1.65 V and the inverting input, R_f in feedback).
+- **Timebase.** The loop cannot sustain 10 us, so the real block period is about 1.26x the nominal 500 us. Do not write `t = i*Output_Interval`. Record `micros()` per block, or use RP2040 free-running ADC with DMA at a fixed `adc_set_clkdiv`. Check with mains hum (50 Hz should appear at 50 Hz).
+- **Truncating average.** `tempStorage/Oversample_Factor` is integer division, so resolution stays at 1 LSB with a -0.5 LSB bias. Store the 32-bit sum, or divide in float.
+- **Rails and clamps.** The +/-15 V op-amp output can reach about +/-13.5 V and drive the ADC pin through R6 = 1 k and silicon diodes. Use a single-supply rail-to-rail op-amp (3.3 V), BAT54S Schottky clamps and R6 >= 4.7 k.
+- **R3.** The schematic says 34 k (G = 35); the BOM says 35 k (G = 36). Measure G with a known 10 mV input.
+- **Scale constants.** Logged data sit on a 23.647 uV/code lattice; the repo constants (3.3, 4095, 35) give 23.025 uV. Commit the flashed firmware. Using LSB = 3.3/4096/35 = 23.019 uV, published EMF is about 2.7% high.
+- **ADC DNL.** RP2040-E11 gives DNL spikes near codes 512, 1536, 2560 and 3584. Check code histograms or exclude those codes.
+
+### Corrected sampling loop
+
+```cpp
+// RAM: 8 B/sample -> keep Max_Samples <= 25000 on the RP2040
+uint32_t sumStore[Max_Samples], tStore[Max_Samples];
+uint32_t acc = 0, n = 0, count = 0, t0 = micros(), next = t0;
+while (digitalRead(BUTTON_PIN) == LOW && count < Max_Samples) {
+  if ((int32_t)(micros() - next) >= 0) {
+    next += Sample_Interval;
+    acc += analogRead(ADC_PIN);
+    if (++n == Oversample_Factor) {
+      sumStore[count] = acc;            // full-precision sum
+      tStore[count++] = micros() - t0;  // real time
+      acc = n = 0;
+    }
+  }
+}
+// output: code = sumStore[i] / (float)Oversample_Factor;
+// V = (code / 4096.0f * VS - VREF) / GAIN
+```
+
+All of these were found after the data were taken; the paper's numbers use the logged data as-is and quote these as uncertainties.
 
 ## Credits and licence
 
