@@ -5,7 +5,7 @@
 
 This repository holds the paper, the raw data, the low-cost data-acquisition system (DAQ) hardware and firmware, and the analysis code needed to reproduce every number and figure.
 
-📄 **Paper:** [`paper/main.pdf`](paper/main.pdf) (APA 7 manuscript) · LaTeX source in [`paper/`](paper)
+📄 **Paper:** [`paper/Hassan_Tariq_Malik_2026_No_Current_No_Braking.pdf`](paper/Hassan_Tariq_Malik_2026_No_Current_No_Braking.pdf) (APA 7 referencing) · LaTeX source in [`paper/`](paper)
 
 <p align="center"><img src="docs/img/setup.jpg" width="360" alt="Apparatus: a magnet on a spring above a coil"> <img src="docs/img/coils.jpg" width="430" alt="The three hand-wound coils"></p>
 
