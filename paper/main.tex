@@ -28,11 +28,11 @@
 \authornote{
 \addORCIDlink{Hassan Tariq Malik}{\todo{ORCID or delete}}
 
-This work was carried out during the 2026 Black Hole Science Internship Programme. M.~S.~Qureshi, S.~Manzoor and P.~Hoodbhoy supervised the project. Data, firmware, hardware design files and analysis code are openly available at \url{https://github.com/smash09x/magnet-spring-em-damping} \parencite{Repo2026}. The authors have no conflicts of interest to disclose.
+This work was carried out during the 2026 Black Hole Science Internship Programme. M.~S.~Qureshi, S.~Manzoor and P.~Hoodbhoy supervised the project. Data, firmware, hardware design files and analysis code are openly available at \url{https://github.com/smash09x/magnet-spring-em-damping} \parencite{Repo2026}. The authors have no conflicts of interest to disclose. \todo{Confirm contributions.} Author contributions: H.~T.~Malik, conceptualization, theory, formal analysis and writing (original draft); H.~Kumar, analysis software and video tracking; M.~U.~Farooq, DAQ hardware and firmware, and data collection; M.~S.~Qureshi, S.~Manzoor and P.~Hoodbhoy, supervision. All authors reviewed the manuscript. We thank the staff of The Black Hole Science Lab, including Sayed Iqtidar Ali Shah, for help with the apparatus. An AI assistant (Claude, Anthropic) was used to reanalyse the raw data, including the fundamental-band decay estimator and the mains-hum clock calibration, to simulate independent referee reviews, and to edit the manuscript; the authors checked the analysis and text and take full responsibility for the content. \todo{archive a release on Zenodo and add its DOI to the data statement}
 
 Correspondence concerning this article should be addressed to Hassan Tariq Malik, The Black Hole Science Lab, Islamabad, Pakistan. Email: \href{mailto:hassantariq102938@gmail.com}{hassantariq102938@gmail.com}}
 
-\abstract{A magnet oscillating on a spring above a coil is a standard demonstration of electromagnetic braking, usually checked by showing that the damping scales as $1/R$ with the resistance of the coil circuit. We attempted this check with a US\$43 data-acquisition system built around a Raspberry Pi Pico. Across series resistances from \SI{15}{\ohm} to \SI{2.2}{\mega\ohm} the decay rate did not change: $\gamma = (11.9 \pm 0.5)\times10^{-3}\,\mathrm{s^{-1}}$ ($n = 8$). The coil was closed only through the amplifier's \SI{1}{\mega\ohm} bias resistor, so the braking current was about \SI{16}{nA} and the electromagnetic damping about $10^{-6}$ of the total. A loop closed through the coil alone would have added about 17\%, which the data exclude at about $3\sigma$. A second hidden error was the clock: mains hum recorded at \SI{63}{Hz} instead of \SI{50}{Hz} showed that sampling ran 26\% slower than the firmware assumed. The correction agrees with independent video timing and removes an apparent conflict with the measured spring constants. The remaining damping is mechanical and amplitude dependent. We give a corrected circuit and five checks for instructors.}
+\abstract{A magnet oscillating on a spring above a coil is a standard demonstration of electromagnetic braking, usually checked by showing that the damping scales as $1/R$ with the resistance of the coil circuit. We attempted this check with a US\$43 data-acquisition system built around a Raspberry Pi Pico. Across series resistances from \SI{15}{\ohm} to \SI{2.2}{\mega\ohm} the decay rate did not change: $\gamma = (11.9 \pm 0.5)\times10^{-3}\,\mathrm{s^{-1}}$ ($n = 8$). The coil was closed only through the amplifier's \SI{1}{\mega\ohm} bias resistor, so the braking current was about \SI{16}{nA} and the electromagnetic damping a few millionths of the total. For spring~1, a loop closed through the coil alone would have added about 17\%, which the data disfavour at 2.3--3 standard deviations, depending on the assumed amplitude. A second hidden error was the clock: mains hum recorded at \SI{63}{Hz} instead of \SI{50}{Hz} showed that each stored sample took 26\% longer than the firmware assumed. The correction agrees with independent video timing and makes the frequencies consistent with the spring constants if two spring labels were interchanged. The remaining damping is mechanical and amplitude dependent. We give a corrected circuit and five checks for instructors.}
 
 \keywords{electromagnetic induction, damping, Lenz's law, data acquisition, null result, physics education}
 
@@ -63,7 +63,7 @@ If $\Phi(z)$ is the magnet's flux through one of the coil's $N$ turns, Faraday's
 \begin{equation}
 \varepsilon = -N\frac{d\Phi}{dz}\,\dot z \equiv -\kappa(z)\,\dot z .
 \end{equation}
-For a dipole on the axis of a loop of radius $a$, $\Phi \propto a^2/(z^2+a^2)^{3/2}$, so $\kappa(z)$ is zero at the coil plane and largest at $z=\pm a/2$ \parencite{Griffiths2017}. Because $\kappa$ changes along the stroke, the EMF is not a pure sinusoid even when the motion is. It contains harmonics that grow with amplitude, as seen in Figure~\ref{fig:trace}. This matters for the analysis below.
+For a dipole on the axis of a loop of radius $a$, $\Phi \propto a^2/(z^2+a^2)^{3/2}$, so $\kappa(z)$ is zero at the coil plane and largest at $z=\pm a/2$ \parencite{Griffiths2017}. Because $\kappa$ changes along the stroke, the EMF is not a pure sinusoid even when the motion is. It contains harmonics that grow with amplitude, as the recordings below show. This matters for the analysis below.
 
 If the coil is closed through a total resistance $R_{\rm loop}$ (its inductance is negligible at \SI{2}{Hz}), the Joule power averaged over a cycle is $\langle\varepsilon^2\rangle/R_{\rm loop}$. Equating this to the rate of energy loss $2\gamma E$, with $E = \tfrac12 m\omega^2A^2$, gives
 \begin{equation}
@@ -92,7 +92,7 @@ Two NdFeB disc magnets, stuck together, hung in a string cradle from a helical s
 
 \subsection{Data Acquisition}
 
-The coil EMF is tens of millivolts and changes sign, so it cannot go straight into a microcontroller's 0--\SI{3.3}{V} analogue-to-digital converter (ADC). Figure~\ref{fig:chain} shows the signal chain. A buffered divider sets a \SI{1.65}{V} reference, so negative EMF can be represented. The coil drives the high-impedance input of an OPA2134 amplifier (gain 35), whose input is biased to the reference through $R_5 = \SI{1}{\mega\ohm}$. An RC filter (\SI{1.6}{kHz}) and clamp diodes protect the ADC of a Raspberry Pi Pico \parencite{RP2040}. The firmware reads the ADC in a loop, averages blocks of 50 readings, stores up to \SI{60}{s} in RAM and sends the record over USB after each run. The parts cost US\$43, and the design files, firmware and data are open \parencite{Repo2026}.
+The coil EMF is tens of millivolts and changes sign, so it cannot go straight into a microcontroller's 0--\SI{3.3}{V} analogue-to-digital converter (ADC). Figure~\ref{fig:chain} shows the signal chain. A buffered divider sets a \SI{1.65}{V} reference, so negative EMF can be represented. The coil drives the high-impedance input of an OPA2134 amplifier (gain 35), whose input is biased to the reference through $R_5 = \SI{1}{\mega\ohm}$. An RC filter (\SI{1.6}{kHz}) and clamp diodes protect the ADC of a Raspberry Pi Pico \parencite{RP2040}. The firmware reads the ADC in a loop, averages blocks of 50 readings, stores up to 60\,000 points in RAM (about \SI{38}{s} at the true spacing) and sends the record over USB after each run. The parts cost US\$43, and the design files, firmware and data are open \parencite{Repo2026}.
 
 \begin{figure}[tbp]
 \centering
@@ -105,7 +105,7 @@ The DAQ has several limitations, which we found during this analysis:
 \begin{itemize}
 \item The block average uses integer division, so each stored value is truncated to one ADC step. The averaging lowers noise but adds no resolution.
 \item The recorded step is \SI{23.65}{\micro V} at the input, 2.7\% larger than the repository's firmware constants give. This means the flashed firmware differed slightly from the published version. All EMF values, and hence $c$, carry this 2.7\% scale uncertainty.
-\item The input-referred noise before each release ranged from \SIrange{29}{94}{\micro V} rms (median \SI{48}{\micro V}). That is about $3\times10^{-3}$ of the signal.
+\item The input-referred noise before each release ranged from \SIrange{29}{88}{\micro V} rms (median \SI{48}{\micro V}). That is about $3\times10^{-3}$ of the signal.
 \item The ADC timestamps are not measured. They are computed as sample number $\times$ \SI{500}{\micro s}. This turned out to be wrong (Lesson~2 below).
 \item The op-amp runs from $\pm\SI{15}{V}$ rails. Under overload, the clamps can let the ADC pin exceed its absolute ratings. A single-supply rail-to-rail amplifier with Schottky clamps is safer \parencite{Horowitz2015}.
 \end{itemize}
@@ -113,11 +113,19 @@ The DAQ has several limitations, which we found during this analysis:
 
 \subsection{Protocol}
 
-With coil~1, an external resistor $R_{\rm ext}$ was placed in series with the coil. It was set to 0, 33.6, 81.4, 324, 1051, 3180 and \SI{9610}{\ohm} for spring~1, with \SI{0}{\ohm} repeated, and to similar values for spring~2. One spring-1 run used \SI{2.2}{\mega\ohm}. Coils~2 and~3 were recorded once on each spring. Each run lasted about \SI{38}{s}, or about 80 cycles. A phone filmed every run for video tracking.
+With coil~1, an external resistor $R_{\rm ext}$ was placed in series with the coil. It was set to 0, 33.6, 81.4, 324, 1051, 3180 and \SI{9610}{\ohm} for spring~1, with \SI{0}{\ohm} repeated, and to similar values for spring~2. One spring-1 run used \SI{2.2}{\mega\ohm}. Coils~2 and~3 were recorded once on each spring. Each run lasted about \SI{38}{s}, or about 70--80 cycles. A phone filmed every run for video tracking.
 
 \subsection{Analysis}
 
-The analysis scripts are in the repository. Each record was low-pass filtered (fourth-order zero-phase Butterworth, \SI{20}{Hz}; \cite{Virtanen2020}). Because the harmonics in $\varepsilon$ decay faster than the motion does, fitting the EMF peaks overestimates $\gamma$ by 15--20\%. Instead, we isolated the fundamental with a band-pass filter at 0.6--1.4~$f$, took its Hilbert envelope, and fitted $\ln(\text{envelope})$ against time. The fit started \SI{1}{s} after the first large peak and ended \SI{1}{s} before the end of the record, with one point per cycle. Uncertainties come from a block bootstrap. Two other estimators of the displacement decay (a nonlinear fit of the fundamental, and a model of the transduction) agree within 7\%, and we quote their spread as a method uncertainty.
+The analysis scripts are in the repository. Each record was low-pass filtered (fourth-order zero-phase Butterworth, \SI{20}{Hz}; \cite{Virtanen2020}). Because the harmonics in $\varepsilon$ decay faster than the motion does, fitting the EMF peaks overestimates $\gamma$ by about 20\%. Instead, we isolated the fundamental with a band-pass filter at 0.6--1.4~$f$, took its Hilbert envelope (a smooth curve through the oscillation's peaks), and fitted $\ln(\text{envelope})$ against time. The fit started about \SI{1.3}{s} after the first large peak and ended about \SI{1.3}{s} before the end of the record, with one point per cycle. Uncertainties come from a block bootstrap, which refits many resampled versions of each record. Two other estimators of the displacement decay (a nonlinear fit of the fundamental, and a model of the transduction) agree within 7\% (spring~1) and 12\% (spring~2), and we quote their spread as a method uncertainty. Figure~\ref{fig:trace} shows a typical recording and its envelope.
+
+\begin{figure}[tbp]
+\centering
+\includegraphics[width=0.62\linewidth]{figs/trace.pdf}
+\caption{A Typical Recording (Spring 1, Coil 1, $R_{\rm ext} = 0$)}
+\label{fig:trace}
+\figurenote{Top: EMF with the envelope of its fundamental. Bottom: the waveform is visibly non-sinusoidal because the coupling $\kappa(z)$ varies along the stroke.}
+\end{figure}
 
 \section{Results}
 
@@ -125,7 +133,7 @@ The analysis scripts are in the repository. Each record was low-pass filtered (f
 
 Figure~\ref{fig:gR} shows $\gamma$ against $R_c + R_{\rm ext}$. Neither spring shows a trend. Over the eight spring-1 runs below \SI{10}{k\ohm},
 \[
-\gamma_1 = (11.9 \pm 0.5_{\rm scatter} \pm 0.4_{\rm method} \pm 0.15_{\rm clock})\times10^{-3}\ \mathrm{s^{-1}},\qquad Q_1 = 551 \pm 24 .
+\gamma_1 = (11.9 \pm 0.5_{\rm scatter} \pm 0.4_{\rm method} \pm 0.12_{\rm clock})\times10^{-3}\ \mathrm{s^{-1}},\qquad Q_1 = 551 \pm 24 .
 \]
 For spring~2, $\gamma_2 = (13.5 \pm 1.0)\times10^{-3}\,\mathrm{s^{-1}}$ and $Q_2 = 436 \pm 32$. The \SI{2.2}{\mega\ohm} run, where the circuit is effectively open, gives $\gamma = 11.5\times10^{-3}\,\mathrm{s^{-1}}$, the same as the rest. These values use the corrected timebase described below.
 
@@ -137,24 +145,18 @@ For spring~2, $\gamma_2 = (13.5 \pm 1.0)\times10^{-3}\,\mathrm{s^{-1}}$ and $Q_2
 \figurenote{The dashed curve is Equation~\ref{eq:gem} for spring~1 if the loop had been closed through $R_c+R_{\rm ext}$. The dotted line is the prediction for the circuit as built. Error bars are bootstrap standard errors.}
 \end{figure}
 
-From the measured EMF ($\varepsilon_{\rm rms} \approx \SI{16}{mV}$ over the first three cycles) and the initial amplitude $A \approx \SI{2.2}{cm}$ seen in the video, Equation~\ref{eq:gem} gives $c = \SI{0.030}{\ohm\,s^{-1}}$. Closed through the coil alone, the loop would therefore have added $\gamma_{\rm em} \approx 2.0\times10^{-3}\,\mathrm{s^{-1}}$, about 17\% of the total (9--25\% for $A$ between 3.0 and \SI{1.8}{cm}). That effect is several times larger than the run-to-run scatter. A fit of $\gamma = \gamma_0 + c/(R_c+R_{\rm ext})$ to spring~1 gives $c = (-0.011 \pm 0.006)\,\Omega\,\mathrm{s^{-1}}$, which excludes the predicted value at about $3\sigma$ (permutation test $p = .003$; $2.3\sigma$ if $A$ is uncertain by 20\%).
+From the measured EMF ($\varepsilon_{\rm rms} \approx \SI{16}{mV}$ over the first three cycles) and the initial amplitude $A \approx \SI{2.2}{cm}$ seen in the video, Equation~\ref{eq:gem} gives $c = \SI{0.030}{\ohm\,s^{-1}}$. Closed through the coil alone, the loop would therefore have added $\gamma_{\rm em} \approx 2.0\times10^{-3}\,\mathrm{s^{-1}}$, about 17\% of the total (9--25\% for $A$ between 3.0 and \SI{1.8}{cm}). That effect is several times larger than the run-to-run scatter. A fit of $\gamma = \gamma_0 + c/(R_c+R_{\rm ext})$ to spring~1 gives $c = (-0.011 \pm 0.006)\,\Omega\,\mathrm{s^{-1}}$, which disfavours the predicted value by about 3 standard deviations if $A$ is taken as exact, and by 2.3 if $A$ is uncertain by 20\%. A permutation test, which reshuffles the decay rates among the resistances, gives $p = .003$. The fitted $c$ is itself slightly negative, which no physical loss could produce, so the run-to-run scatter is the limiting factor. The decisive argument is the circuit analysis below, not this fit.
 
-\begin{figure}[tbp]
-\centering
-\includegraphics[width=0.62\linewidth]{figs/trace.pdf}
-\caption{A Typical Recording (Spring 1, Coil 1, $R_{\rm ext} = 0$)}
-\label{fig:trace}
-\figurenote{Top: EMF with the envelope of its fundamental. Bottom: the waveform is visibly non-sinusoidal because the coupling $\kappa(z)$ varies along the stroke.}
-\end{figure}
+
 
 \subsection{Lesson 1: The Loop Was Never Closed}
 
-The coil connects between the \SI{1.65}{V} reference and the non-inverting input of the amplifier (Figure~\ref{fig:circuits}a). The only path that closes the coil circuit is $R_5$. Adding $R_{\rm ext}$ in series changed $R_{\rm loop}$ from \SI{1.000}{\mega\ohm} to at most \SI{1.010}{\mega\ohm}. The current was always about $\SI{16}{mV}/\SI{1}{\mega\ohm} \approx \SI{16}{nA}$, dissipating about \SI{0.3}{nW}. The mechanical loss is about \SI{0.25}{mW}. By Equation~\ref{eq:gem}, $\gamma_{\rm em} \approx 3\times10^{-8}\,\mathrm{s^{-1}}$ in every run. The DAQ measured the EMF accurately, but no braking current ever flowed.
+The coil connects between the \SI{1.65}{V} reference and the non-inverting input of the amplifier (Figure~\ref{fig:circuits}a). The only path that closes the coil circuit is $R_5$. Adding $R_{\rm ext}$ in series changed $R_{\rm loop}$ from \SI{1.000}{\mega\ohm} to at most \SI{1.010}{\mega\ohm}. The current was always about $\SI{16}{mV}/\SI{1}{\mega\ohm} \approx \SI{16}{nA}$, dissipating about \SI{0.3}{nW}. The mechanical loss is about \SI{0.1}{mW}. By Equation~\ref{eq:gem}, $\gamma_{\rm em} \approx 3\times10^{-8}\,\mathrm{s^{-1}}$ in every run. The DAQ measured the EMF accurately, but no braking current ever flowed.
 
 Two observations support this diagnosis.
 \begin{itemize}
 \item \textbf{The \SI{2.2}{\mega\ohm} run.} Here $R_{\rm ext}$ and $R_5$ form a voltage divider, so the recorded EMF should fall to $10^6/(3.2\times10^6) = 0.31$ of its usual value. After correcting for this run's 15\% smaller release, it is 0.30.
-\item \textbf{The low resistances.} Small resistors made no measurable difference to the recorded EMF. That is expected for a series resistor, but not for a parallel one.
+\item \textbf{The low resistances.} Small resistors made no measurable difference to the recorded EMF. That confirms they were wired in series with the coil: a \SI{33.6}{\ohm} resistor across the coil would instead have cut the recorded EMF to about 0.69 of its usual value.
 \end{itemize}
 The \SI{2.2}{\mega\ohm} run also shows the strongest mains pickup, as expected for a high-impedance node.
 
@@ -170,7 +172,7 @@ The \SI{2.2}{\mega\ohm} run also shows the strongest mains pickup, as expected f
 
 \subsection{Lesson 2: The Clock Was Never Checked}
 
-Every recording contains a narrow line at \SI{63.07 \pm 0.23}{Hz}, with a harmonic at \SI{126.2}{Hz} (Figure~\ref{fig:hum}). Pakistan's mains frequency is \SI{50}{Hz}, so the firmware's assumed timebase runs fast by $s = 63.07/50 = 1.261 \pm 0.013$; the uncertainty is set by the grid's tolerance. The cause is in the firmware. It schedules each ADC read \SI{10}{\micro s} after the last. When one read plus the loop overhead takes longer, the loop simply runs flat out. Each read then takes about \SI{12.6}{\micro s}, and each stored point is \SI{631}{\micro s} apart, not \SI{500}{\micro s}.
+Every recording contains a narrow line at \SI{63.07 \pm 0.23}{Hz}, with a harmonic at \SI{126.1}{Hz} (Figure~\ref{fig:hum}). Pakistan's mains frequency is \SI{50}{Hz}. If this line is mains pickup, the true spacing between stored samples is $s = 63.07/50 = 1.261 \pm 0.013$ times the spacing the firmware assumed; we call $s$ the clock factor, and its uncertainty is set by the grid's tolerance. Three features identify the line as mains: it has harmonics, it is strongest in the high-impedance \SI{2.2}{\mega\ohm} run, and its frequency wanders by 0.4\% between runs while the spring frequency stays fixed to 0.02\%, as expected for the grid and not for a crystal-timed source such as the servo controller. Lighting flicker would appear at \SI{100}{Hz}. The cause is in the firmware. It schedules each ADC read \SI{10}{\micro s} after the last. When one read plus the loop overhead takes longer, the loop simply runs flat out. Each read then takes about \SI{12.6}{\micro s}, and each stored point is \SI{631}{\micro s} apart, not \SI{500}{\micro s}. A 60\,000-point record therefore lasts \SI{37.9}{s}, not \SI{30}{s}; timing one recording with a stopwatch or video would confirm this directly.
 
 \begin{figure}[tbp]
 \centering
@@ -182,13 +184,13 @@ Every recording contains a narrow line at \SI{63.07 \pm 0.23}{Hz}, with a harmon
 
 The correction divides every frequency and decay rate by $s$, while leaving $Q$ unchanged. Two independent checks agree with it:
 \begin{itemize}
-\item \textbf{Video.} The phone video runs on its own clock. Its decay rates agree with the clock-corrected DAQ values (mean ratio $1.06 \pm 0.06$). The video alone implies $s = 1.23 \pm 0.07$, which excludes $s = 1$.
-\item \textbf{Spring constants.} The corrected frequencies are \SI{2.08}{Hz} and \SI{1.86}{Hz}. Their ratio, 1.118, does not depend on $s$. It is consistent with the measured spring constants only if the two $k$ labels were interchanged (predicted 1.083). With the labels swapped, both frequencies lie 4--8\% below the static-$k$ predictions. Spring mass alone cannot account for that gap. Initial tension in close-wound springs, which makes $mg/x$ overestimate $k$, is a likely cause. The spring constants and the timebase will be re-measured \todo{direct timing check (GPIO toggle or micros() log) and re-measured $k$}.
+\item \textbf{Video.} The phone video runs on its own clock. The ratio of its decay rates to the DAQ values is $1.06 \pm 0.06$ with the clock correction and $0.84 \pm 0.05$ without it, so the video favours the correction. Because the per-run video rates scatter widely, this checks the overall scale only; counting oscillation cycles in the video would be a much tighter test.
+\item \textbf{Spring constants.} The corrected frequencies are \SI{2.08}{Hz} and \SI{1.86}{Hz}. Their ratio, 1.118, does not depend on $s$. It is consistent with the measured spring constants only if the two $k$ labels were interchanged (predicted 1.083). With the labels swapped, both frequencies lie 4--7\% below the static-$k$ predictions. Spring mass alone cannot account for that gap. Initial tension in close-wound springs, which makes $mg/x$ overestimate $k$, is a likely cause. The spring constants and the timebase will be re-measured \todo{direct timing check (GPIO toggle or micros() log) and re-measured $k$}.
 \end{itemize}
 
 \subsection{The Damping That Remains Is Mechanical}
 
-Since $\gamma_{\rm em}$ was negligible, the measured damping is entirely mechanical, and it is not exponential. On both springs, the first half of each run decays faster than the second: by 18\% for spring~1 and 25\% for spring~2. For spring~2, whose release amplitude varied more, $\gamma$ correlates strongly with the initial EMF ($r = .97$, Figure~\ref{fig:amp}). Air drag on the cradle is about 2\% of the damping, too small to explain this. Candidates are coupling to the cradle's pendulum or torsional modes \parencite{Berg1991}, friction at the string attachments, and losses in the steel retort rod a few centimetres from the magnet. We cannot yet tell them apart. A control run with the rod moved away would test the last.
+Since $\gamma_{\rm em}$ was negligible, the measured damping is entirely mechanical, and it is not exponential. The first half of each run decays faster than the second, by $11 \pm 12\%$ for spring~1 (7 of 8 runs) and $19 \pm 6\%$ for spring~2 (all 8 runs). For spring~2, whose release amplitude varied more, $\gamma$ also correlates strongly with the initial EMF ($r = .97$, Figure~\ref{fig:amp}); for spring~1, whose release amplitude varied by only 6\%, there is no such trend ($r = -.40$). The amplitude dependence is therefore clear for spring~2 and weaker for spring~1. Air drag on the cradle is about 2\% of the damping, too small to explain this. Candidates are coupling to the cradle's pendulum or torsional modes \parencite{Berg1991}, friction at the string attachments, and losses in the steel retort rod a few centimetres from the magnet. We cannot yet tell them apart. A control run with the rod moved away would test the last.
 
 \begin{figure}[tbp]
 \centering
@@ -201,7 +203,7 @@ The coil geometry changes the EMF but, with no current flowing, not the damping.
 
 \section{Discussion}
 
-Neither error is exotic. A high-impedance input is the right choice for measuring an EMF and the wrong one for producing braking. A microcontroller loop that cannot keep up with its schedule fails silently. Both errors left clean-looking data: smooth exponential decays and a stable frequency. The first was revealed only because the expected $1/R$ dependence was missing. The second was revealed only because the measured frequencies disagreed with the spring constants. The checks below would have caught both in the first hour.
+Neither error is exotic. A high-impedance input is the right choice for measuring an EMF and the wrong one for producing braking. A microcontroller loop that cannot keep up with its schedule fails silently. Both errors left clean-looking data: smooth exponential decays and a stable frequency. The first was revealed only because the expected $1/R$ dependence was missing. The second was revealed by the mains line, which we went looking for because the measured frequencies disagreed with the spring constants. The checks below would have caught both in the first hour.
 
 \begin{mdframed}[linewidth=0.6pt,innertopmargin=6pt,innerbottommargin=6pt,nobreak=true]
 \textbf{Lessons for Instructors}
@@ -214,25 +216,11 @@ Neither error is exotic. A high-impedance input is the right choice for measurin
 \end{enumerate}
 \end{mdframed}
 
-Our study has limitations. Each resistance was recorded once (twice at \SI{0}{\ohm}). The coil and magnet geometry were not fully documented. The amplitude $A$ in Equation~\ref{eq:gem} comes from video. The clock correction rests on the mains frequency rather than a direct timing measurement. None of these affects the central conclusion, which rests on a $10^6$-fold suppression of the current.
+Our study has limitations. Each resistance was recorded once (twice at \SI{0}{\ohm}). The coil and magnet geometry were not fully documented. The amplitude $A$ in Equation~\ref{eq:gem} comes from video. The clock correction rests on the mains frequency rather than a direct timing measurement. None of these affects the central conclusion: the \SI{1}{\mega\ohm} path cut the current by a factor of $R_5/R_c \approx 7\times10^{4}$ compared with a coil closed on itself.
 
 \section{Conclusion}
 
-A low-cost DAQ recorded millivolt coil EMFs cleanly, yet changing the series resistance from \SI{15}{\ohm} to \SI{2.2}{\mega\ohm} did not change the damping of a magnet--spring oscillator. The coil circuit was closed only through a \SI{1}{\mega\ohm} bias resistor, so the electromagnetic damping was suppressed by about $10^6$. Separately, mains hum showed that the DAQ's clock ran 26\% slow, and correcting it reconciled the frequencies with the spring constants and with video timing. Both are easy mistakes, easy to detect, and worth teaching.
-
-\section{Author Contributions}
-
-\todo{Confirm.} H.~T.~Malik: conceptualization, theory, formal analysis, writing (original draft). H.~Kumar: analysis software, video tracking. M.~U.~Farooq: DAQ hardware and firmware, data collection. M.~S.~Qureshi, S.~Manzoor and P.~Hoodbhoy: supervision. All authors reviewed the manuscript.
-
-\section{Acknowledgments}
-
-We thank the staff of The Black Hole Science Lab, including Sayed Iqtidar Ali Shah, for help with the apparatus.
-
-\textbf{Use of AI tools.} An AI assistant (Claude, Anthropic) was used to reanalyse the raw data, including the fundamental-band decay estimator and the mains-hum clock calibration; to simulate independent referee reviews; and to edit the manuscript. All analysis code is in the public repository. The authors checked the analysis and text and take full responsibility for the content.
-
-\section{Data Availability}
-
-The data that support the findings of this study are openly available at \url{https://github.com/smash09x/magnet-spring-em-damping} \todo{archive a release on Zenodo and add its DOI}.
+A low-cost DAQ recorded millivolt coil EMFs cleanly, yet changing the series resistance from \SI{15}{\ohm} to \SI{2.2}{\mega\ohm} did not change the damping of a magnet--spring oscillator. The coil circuit was closed only through a \SI{1}{\mega\ohm} bias resistor, so the electromagnetic damping was a few millionths of the total. Separately, mains hum showed that the DAQ's sample spacing was 26\% longer than assumed; the correction agrees with video timing and, if two spring labels were swapped, with the spring constants. Both are easy mistakes, easy to detect, and worth teaching.
 
 \printbibliography
 
