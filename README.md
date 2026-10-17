@@ -1,6 +1,6 @@
 # No current, no braking: electromagnetic damping of a magnet–spring oscillator
 
-**Hassan Tariq Malik, Hardyesh Kumar, Muhammad Umer Farooq** · supervised by M. Sanan Qureshi, Dr Sadia Manzoor and Dr Pervez Hoodbhoy
+**Hassan Tariq Malik** ([ORCID 0009-0001-3749-090X](https://orcid.org/0009-0001-3749-090X)), **Hardyesh Kumar, Muhammad Umer Farooq** · supervised by M. Sanan Qureshi, Dr Sadia Manzoor and Dr Pervez Hoodbhoy
 *The Black Hole Science Internship Programme 2026, Islamabad*
 
 This repository holds the paper, the raw data, the low-cost data-acquisition system (DAQ) hardware and firmware, and the analysis code needed to reproduce every number and figure.
