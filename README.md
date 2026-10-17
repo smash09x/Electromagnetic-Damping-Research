@@ -1,4 +1,4 @@
-# No Current, No Braking: Two Instrument Lessons From a Magnet–Coil Damping Experiment
+# Electromagnetic Damping: A Closer Look at a Contactless Braking System
 
 Data and code for a study of electromagnetic damping in a magnet–spring oscillator. It tests whether the
 damping falls as 1/R when resistance is added to the coil circuit, using a low-cost
@@ -178,6 +178,6 @@ All of these were found after the data were taken. The analysis uses the logged 
 
 If you use this repository, please cite the paper:
 
-> Malik, H. T., Kumar, H., & Farooq, M. U. (2026). *No current, no braking: Two instrument lessons from a magnet–coil damping experiment* [Preprint].
+> Malik, H. T., Kumar, H., & Farooq, M. U. (2026). *Electromagnetic damping: A closer look at a contactless braking system* [Preprint].
 
 Contact: Hassan Tariq Malik, hassantariq102938@gmail.com
