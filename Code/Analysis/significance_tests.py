@@ -61,23 +61,22 @@ out['divider_2M2']=dict(predicted=round(pred,4),predicted_range_5pct_resistors=[
    observed_raw=round(ratio_raw,3),observed_raw_err=round(ratio_raw*V.std(ddof=1)/V.mean(),3),
    h21_2M2=round(r2['h21'],3),h21_lowR_range=[round(H.min(),3),round(H.max(),3)],r_eps_vs_h21=round(rH,3),
    eps_expected_mV=round(Vexp,2),ratio_amp_corrected=round(ratio_amp,3),ratio_amp_corrected_err=round(e_amp,3),
-   filtered_prerelease_noise_mV=round(nM,3),raw_prerelease_noise_mV=1.433,
+   filtered_prerelease_noise_mV=round(nM,3),raw_prerelease_noise_mV=round(float(np.std(load(pM)[1][:600]))*1e-3,3),
    ratio_amp_and_noise_corrected=round(ratio_amp_noise,3),
    note='hum at 63 Hz nominal is removed by the 20 Hz Butterworth used for eps_rms, so the 1.4 mV raw noise contributes only the filtered residual in quadrature; H2/H1 extrapolation outside the low-R range (0.32-0.35)')
 print(json.dumps(out['divider_2M2'],indent=1))
 json.dump(out,open(os.path.join(RES,'final_stats.json'),'w'),indent=1,default=float)
-# --- (c) video
-vid={'S1':{0:11.7,33.6:17.3,81.4:16.1,324:13.3,3180:11.6,9610:11.8},'S2':{0:11.6,33.3:15.7,84.1:13.6,327:14.7,3190:10.5,9670:12.1}}
-allr=[]
-for sp in ('S1','S2'):
-    rr=[]
-    for R0,gv in vid[sp].items():
-        cand=[r for r in rows if r['sp']==sp and r['R']==R0]
-        # 0-ohm: which retake? report first (a) and mean
-        ge=cand[0]['gamma']*1e3; gmean=np.mean([c['gamma'] for c in cand])*1e3
-        rr.append((R0,gv,ge,gmean,gv/ge,cand[0]['g_peak']*S*1e3))
-    a=np.array([x[4] for x in rr]); allr+=list(a)
-    print(sp,[(x[0],x[1],round(x[2],2),round(x[4],2)) for x in rr])
-    print(sp,'ratio video/EMF_true mean %.3f sd %.3f sem %.3f; vs nominal peak %.3f; corr %.2f'%(a.mean(),a.std(ddof=1),a.std(ddof=1)/np.sqrt(len(a)),np.mean([x[1]/x[5] for x in rr]),stats.pearsonr([x[1] for x in rr],[x[2] for x in rr])[0]))
-a=np.array(allr); print('ALL mean %.3f sd %.3f sem %.3f n=%d; t vs 1: p=%.3f'%(a.mean(),a.std(ddof=1),a.std(ddof=1)/np.sqrt(len(a)),len(a),stats.ttest_1samp(a,1).pvalue))
-print('median',np.median(a))
+# --- (c) 1/R fit at a common amplitude (removes run-to-run variation in release amplitude)
+r1=[r for r in rows if r['sp']=='S1' and r['R']<1e5]
+def gref(r,A):
+    L=np.array(r['loc']); b=np.polyfit(L[:,0],L[:,1],1); return np.polyval(b,A)
+Aref=0.75*min(np.exp(np.mean(np.log(np.array(r['loc'])[:2,0]))) for r in r1)
+g=np.array([gref(r,Aref) for r in r1]); Rl=np.array([r['R'] for r in r1])+RC
+X=np.column_stack([np.ones_like(Rl),1/Rl]); beta=np.linalg.lstsq(X,g,rcond=None)[0]
+res=g-X@beta; cov=(res@res/(len(g)-2))*np.linalg.inv(X.T@X)
+cA,cAe=beta[1],float(np.sqrt(cov[1,1])); cp=out['S1_cfit']['c_pred']
+out['S1_cfit']['amplitude_matched']=dict(A_ref_uV=round(float(Aref)),c=round(float(cA),4),c_err=round(cAe,4),
+    t_vs_pred=round(float((cp-cA)/cAe),2),p_one_sided_t6=round(float(stats.t.sf((cp-cA)/cAe,len(g)-2)),3),
+    leverage=[round(float(x),2) for x in np.diag(X@np.linalg.inv(X.T@X)@X.T)])
+print('amplitude-matched c:',out['S1_cfit']['amplitude_matched'])
+json.dump(out,open(os.path.join(RES,'final_stats.json'),'w'),indent=1,default=float)
