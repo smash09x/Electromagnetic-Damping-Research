@@ -1,0 +1,193 @@
+{
+ "units": "gamma in 1e-3 s^-1 (true time), c in Ohm/s",
+ "clock_s": 1.2613,
+ "clock_s_sd_runs": 0.0047,
+ "clock_s_grid_tol": 0.013,
+ "estimator": "Hilbert envelope of fundamental band 0.6-1.4f, window t0+1s..end-1s, 1 pt/cycle, 6-cycle block bootstrap",
+ "S1": {
+  "gamma": [
+   11.887,
+   0.495
+  ],
+  "g_peak": [
+   14.118,
+   0.463
+  ],
+  "g_rms": [
+   12.844,
+   0.476
+  ],
+  "g_nls": [
+   12.031,
+   0.526
+  ],
+  "g_phys": [
+   11.246,
+   0.523
+  ],
+  "early": [
+   15.62,
+   1.172
+  ],
+  "late": [
+   13.208,
+   0.336
+  ],
+  "gamma_at_ref_amp": {
+   "A_ref_uV": 14748,
+   "mean": 11.358,
+   "sd": 0.786,
+   "corr_with_eps": -0.17
+  },
+  "corr_gamma_eps_pearson": -0.398,
+  "corr_gamma_eps_spearman": -0.286,
+  "corr_lategamma_eps": 0.669,
+  "f_true_mean": 2.0821,
+  "Q_mean": 551.2,
+  "Q_sd": 24.0,
+  "bootstrap_over_fitSE": 0.88
+ },
+ "S2": {
+  "gamma": [
+   13.491,
+   0.954
+  ],
+  "g_peak": [
+   16.609,
+   1.543
+  ],
+  "g_rms": [
+   14.908,
+   1.231
+  ],
+  "g_nls": [
+   13.718,
+   0.97
+  ],
+  "g_phys": [
+   12.167,
+   0.634
+  ],
+  "early": [
+   18.789,
+   1.858
+  ],
+  "late": [
+   15.009,
+   1.324
+  ],
+  "gamma_at_ref_amp": {
+   "A_ref_uV": 10981,
+   "mean": 11.562,
+   "sd": 1.088,
+   "corr_with_eps": 0.61
+  },
+  "corr_gamma_eps_pearson": 0.967,
+  "corr_gamma_eps_spearman": 0.976,
+  "corr_lategamma_eps": 0.94,
+  "f_true_mean": 1.8622,
+  "Q_mean": 435.6,
+  "Q_sd": 31.7,
+  "bootstrap_over_fitSE": 0.91
+ },
+ "S1_cfit": {
+  "model": "gamma = gamma0 + c/(Rc+Rext), OLS (equal weights = run-to-run scatter, residual-scaled), Student t",
+  "c_pred": 0.03032,
+  "c_pred_note": "energy method, eps_rms first 3 cycles, true omega, A=2.2 cm (no sigma_A)",
+  "gamma_em_pred_at_Rc_1e3": 1.995,
+  "gamma_em_frac_of_gamma": 0.168,
+  "gamma_em_as_built_1e3": 3.0318664378147556e-05,
+  "n8_lt10k": {
+   "c": -0.01077,
+   "c_err": 0.00554,
+   "dof": 6,
+   "sigmaA_0pct": {
+    "z": 7.42,
+    "p_one_sided": 0.0002,
+    "gauss_equiv": 3.61
+   },
+   "sigmaA_10pct": {
+    "z": 5.0,
+    "p_one_sided": 0.0012,
+    "gauss_equiv": 3.03
+   },
+   "sigmaA_20pct": {
+    "z": 3.08,
+    "p_one_sided": 0.0108,
+    "gauss_equiv": 2.3
+   },
+   "perm_p": 0.003,
+   "perm_gauss_equiv": 2.75,
+   "loo_gauss_equiv_range": [
+    3.21,
+    3.62
+   ]
+  },
+  "n9_incl_2M2": {
+   "c": -0.00899,
+   "c_err": 0.0056,
+   "dof": 7,
+   "sigmaA_0pct": {
+    "z": 7.03,
+    "p_one_sided": 0.0001,
+    "gauss_equiv": 3.71
+   },
+   "sigmaA_10pct": {
+    "z": 4.76,
+    "p_one_sided": 0.001,
+    "gauss_equiv": 3.08
+   },
+   "sigmaA_20pct": {
+    "z": 2.94,
+    "p_one_sided": 0.0108,
+    "gauss_equiv": 2.3
+   },
+   "perm_p": 0.003,
+   "perm_gauss_equiv": 2.75
+  },
+  "n7_0ohm_avg": {
+   "c": -0.01049,
+   "c_err": 0.00514,
+   "dof": 5,
+   "sigmaA_0pct": {
+    "z": 7.94,
+    "p_one_sided": 0.0003,
+    "gauss_equiv": 3.48
+   },
+   "sigmaA_10pct": {
+    "z": 5.13,
+    "p_one_sided": 0.0018,
+    "gauss_equiv": 2.91
+   },
+   "sigmaA_20pct": {
+    "z": 3.1,
+    "p_one_sided": 0.0135,
+    "gauss_equiv": 2.21
+   },
+   "perm_p": 0.0086,
+   "perm_gauss_equiv": 2.38
+  }
+ },
+ "divider_2M2": {
+  "predicted": 0.3125,
+  "predicted_range_5pct_resistors": [
+   0.291,
+   0.334
+  ],
+  "observed_raw": 0.245,
+  "observed_raw_err": 0.015,
+  "h21_2M2": 0.285,
+  "h21_lowR_range": [
+   0.317,
+   0.355
+  ],
+  "r_eps_vs_h21": 0.999,
+  "eps_expected_mV": 13.13,
+  "ratio_amp_corrected": 0.303,
+  "ratio_amp_corrected_err": 0.006,
+  "filtered_prerelease_noise_mV": 0.042,
+  "raw_prerelease_noise_mV": 1.433,
+  "ratio_amp_and_noise_corrected": 0.303,
+  "note": "hum at 63 Hz nominal is removed by the 20 Hz Butterworth used for eps_rms, so the 1.4 mV raw noise contributes only the filtered residual in quadrature; H2/H1 extrapolation outside the low-R range (0.32-0.35)"
+ }
+}
