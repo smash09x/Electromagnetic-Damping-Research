@@ -1,0 +1,22 @@
+n=11  f_hum = 63.067 +/- 0.233 Hz  ->  s = 1.2613 +/- 0.0047
+  spring_1/coil_1/Resistance/0.0/Retake 1  63.338 Hz  snr=9
+  spring_1/coil_1/Resistance/0.0/Retake 2  62.858 Hz  snr=17
+  spring_1/coil_1/Resistance/1051          63.225 Hz  snr=42
+  spring_1/coil_1/Resistance/2.2M          63.054 Hz  snr=821
+  spring_1/coil_1/Resistance/3.18k         63.354 Hz  snr=25
+  spring_1/coil_1/Resistance/324           52.538 Hz  snr=25
+  spring_1/coil_1/Resistance/33.6          55.071 Hz  snr=20
+  spring_1/coil_1/Resistance/81.4          52.538 Hz  snr=33
+  spring_1/coil_1/Resistance/9.61k         62.979 Hz  snr=103
+  spring_1/coil_2                          62.858 Hz  snr=47
+  spring_1/coil_3                          63.508 Hz  snr=10
+  spring_2/coil_1/Resistance/0.0           62.625 Hz  snr=184
+  spring_2/coil_1/Resistance/0.0/Retake    63.142 Hz  snr=139
+  spring_2/coil_1/Resistance/3.19k         62.863 Hz  snr=92
+  spring_2/coil_1/Resistance/327           63.533 Hz  snr=139
+  spring_2/coil_1/Resistance/33.3          62.933 Hz  snr=68
+  spring_2/coil_1/Resistance/84.1          63.054 Hz  snr=70
+  spring_2/coil_1/Resistance/9.67k         63.121 Hz  snr=63
+  spring_2/coil_1/Resistance/997           63.154 Hz  snr=69
+  spring_2/coil_2                          63.304 Hz  snr=32
+  spring_2/coil_3                          63.279 Hz  snr=133
