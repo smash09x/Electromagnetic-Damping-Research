@@ -1,0 +1,110 @@
+common Aref 11000 S1 10.29 +- 1.45
+common Aref 11000 S2 11.57 +- 1.08
+common Aref 13000 S1 10.86 +- 1.07
+common Aref 13000 S2 12.60 +- 0.71
+{
+ "model": "gamma = gamma0 + c/(Rc+Rext), OLS (equal weights = run-to-run scatter, residual-scaled), Student t",
+ "c_pred": 0.03032,
+ "c_pred_note": "energy method, eps_rms first 3 cycles, true omega, A=2.2 cm (no sigma_A)",
+ "gamma_em_pred_at_Rc_1e3": 1.995,
+ "gamma_em_frac_of_gamma": 0.168,
+ "gamma_em_as_built_1e3": 3.0318664378147556e-05,
+ "n8_lt10k": {
+  "c": -0.01077,
+  "c_err": 0.00554,
+  "dof": 6,
+  "sigmaA_0pct": {
+   "z": 7.42,
+   "p_one_sided": 0.0002,
+   "gauss_equiv": 3.61
+  },
+  "sigmaA_10pct": {
+   "z": 5.0,
+   "p_one_sided": 0.0012,
+   "gauss_equiv": 3.03
+  },
+  "sigmaA_20pct": {
+   "z": 3.08,
+   "p_one_sided": 0.0108,
+   "gauss_equiv": 2.3
+  },
+  "perm_p": 0.003,
+  "perm_gauss_equiv": 2.75,
+  "loo_gauss_equiv_range": [
+   3.21,
+   3.62
+  ]
+ },
+ "n9_incl_2M2": {
+  "c": -0.00899,
+  "c_err": 0.0056,
+  "dof": 7,
+  "sigmaA_0pct": {
+   "z": 7.03,
+   "p_one_sided": 0.0001,
+   "gauss_equiv": 3.71
+  },
+  "sigmaA_10pct": {
+   "z": 4.76,
+   "p_one_sided": 0.001,
+   "gauss_equiv": 3.08
+  },
+  "sigmaA_20pct": {
+   "z": 2.94,
+   "p_one_sided": 0.0108,
+   "gauss_equiv": 2.3
+  },
+  "perm_p": 0.003,
+  "perm_gauss_equiv": 2.75
+ },
+ "n7_0ohm_avg": {
+  "c": -0.01049,
+  "c_err": 0.00514,
+  "dof": 5,
+  "sigmaA_0pct": {
+   "z": 7.94,
+   "p_one_sided": 0.0003,
+   "gauss_equiv": 3.48
+  },
+  "sigmaA_10pct": {
+   "z": 5.13,
+   "p_one_sided": 0.0018,
+   "gauss_equiv": 2.91
+  },
+  "sigmaA_20pct": {
+   "z": 3.1,
+   "p_one_sided": 0.0135,
+   "gauss_equiv": 2.21
+  },
+  "perm_p": 0.0086,
+  "perm_gauss_equiv": 2.38
+ }
+}
+{
+ "predicted": 0.3125,
+ "predicted_range_5pct_resistors": [
+  0.291,
+  0.334
+ ],
+ "observed_raw": 0.245,
+ "observed_raw_err": 0.015,
+ "h21_2M2": 0.285,
+ "h21_lowR_range": [
+  0.317,
+  0.355
+ ],
+ "r_eps_vs_h21": 0.999,
+ "eps_expected_mV": 13.13,
+ "ratio_amp_corrected": 0.303,
+ "ratio_amp_corrected_err": 0.006,
+ "filtered_prerelease_noise_mV": 0.042,
+ "raw_prerelease_noise_mV": 1.433,
+ "ratio_amp_and_noise_corrected": 0.303,
+ "note": "hum at 63 Hz nominal is removed by the 20 Hz Butterworth used for eps_rms, so the 1.4 mV raw noise contributes only the filtered residual in quadrature; H2/H1 extrapolation outside the low-R range (0.32-0.35)"
+}
+S1 [(0, 11.7, 10.84, 1.08), (33.6, 17.3, 11.95, 1.45), (81.4, 16.1, 12.09, 1.33), (324, 13.3, 12.31, 1.08), (3180, 11.6, 11.74, 0.99), (9610, 11.8, 12.47, 0.95)]
+S1 ratio video/EMF_true mean 1.146 sd 0.199 sem 0.081; vs nominal peak 0.760; corr 0.26
+S2 [(0, 11.6, 14.88, 0.78), (33.3, 15.7, 13.95, 1.13), (84.1, 13.6, 11.86, 1.15), (327, 14.7, 13.26, 1.11), (3190, 10.5, 13.21, 0.79), (9670, 12.1, 13.72, 0.88)]
+S2 ratio video/EMF_true mean 0.973 sd 0.173 sem 0.070; vs nominal peak 0.630; corr -0.16
+ALL mean 1.059 sd 0.199 sem 0.058 n=12; t vs 1: p=0.326
+median 1.079943527107835

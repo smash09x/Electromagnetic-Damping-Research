@@ -1,61 +1,142 @@
-# No current, no braking: electromagnetic damping of a magnet–spring oscillator
+# No Current, No Braking: Two Instrument Lessons From a Magnet–Coil Damping Experiment
 
-**Hassan Tariq Malik** (lead and corresponding author, [ORCID 0009-0001-3749-090X](https://orcid.org/0009-0001-3749-090X)) · co-authors: Hardyesh Kumar and Muhammad Umer Farooq · supervised by M. Sanan Qureshi, Dr Sadia Manzoor and Dr Pervez Hoodbhoy
-*The Black Hole Science Internship Programme 2026, Islamabad*
+Data and code for a study of electromagnetic damping in a magnet–spring oscillator. It tests whether the
+damping falls as 1/R when resistance is added to the coil circuit, using a low-cost
+Raspberry Pi Pico data-acquisition system (DAQ).
 
-This repository holds the paper, the raw data, the low-cost data-acquisition system (DAQ) hardware and firmware, and the analysis code needed to reproduce every number and figure.
+Author: Hassan Tariq Malik ([ORCID 0009-0001-3749-090X](https://orcid.org/0009-0001-3749-090X)) · Co-authors: Hardyesh Kumar, Muhammad Umer Farooq
+The Black Hole Science Internship Programme 2026, Islamabad
+Research supervisors: M. Sanan Qureshi, Dr Sadia Manzoor (COMSATS University Islamabad), Dr Pervez Hoodbhoy
 
-📄 **Paper:** [`paper/Hassan_Tariq_Malik_2026_No_Current_No_Braking.pdf`](paper/Hassan_Tariq_Malik_2026_No_Current_No_Braking.pdf) (APA 7 referencing) · LaTeX source in [`paper/`](paper)
+## Quick start
 
-<p align="center"><img src="docs/img/setup.jpg" width="360" alt="Apparatus: a magnet on a spring above a coil"> <img src="docs/img/coils.jpg" width="430" alt="The three hand-wound coils"></p>
+```bash
+pip install -r Code/requirements.txt
+cd Code/Analysis
+python run_all.py
+```
 
-## The result in one paragraph
+`run_all.py` runs every analysis script in order on the raw DAQ dumps in `Data/Raw/`. It writes the
+results, the figures, a combined workbook (`Overall_Results.xlsx`) and each script's printed output to
+`Data/Results/`.
 
-A magnet oscillating on a spring above a coil should be braked by the current induced in the coil, and the braking should fall as 1/R when you add resistance to the coil circuit. We built a US$43 Raspberry Pi Pico DAQ to measure this. **The damping did not change at all between 15 Ω and 2.2 MΩ.** The cause was the measurement circuit: the coil was closed only through the amplifier's 1 MΩ bias resistor, so about 16 nA flowed and the electromagnetic damping was a few millionths of the total. Separately, **the 50 Hz mains hum in the data showed up at 63 Hz**: the firmware's sampling loop could not keep its 10 µs schedule, so every timestamp was 26% too short. The correction agrees with independent video timing, and with the spring constants if two spring labels were swapped.
+## What is measured
 
-<p align="center"><img src="docs/img/gamma_vs_R.png" width="420" alt="Decay rate versus resistance: flat"> <img src="docs/img/hum.png" width="420" alt="Mains hum appearing at 63 Hz"></p>
+A pair of NdFeB magnets (105 g in total) hangs on a spring and oscillates about 6 cm above a hand-wound coil.
+The DAQ amplifies the coil's EMF 35× and records it at a nominal 2 kS/s.
 
-## Lessons for instructors
+- **Outcome:** the decay rate γ of the oscillation. It is fitted to the Hilbert envelope of the
+  fundamental-frequency band of the EMF, with block-bootstrap errors. Q = πf/γ.
+- **Manipulation:** the external resistance R_ext in series with the coil (0 Ω to 2.2 MΩ), two springs,
+  and three coils.
+- **Clock correction:** the firmware's sampling loop could not keep its 10 µs schedule. The 50 Hz mains
+  line appears at 63.07 Hz on the firmware's timebase, so all times are multiplied by
+  s = 1.2613 (± 0.013, grid tolerance). Every value below is clock-corrected.
+- **Prediction:** the energy method gives γ_em = ⟨ε²⟩ / (R_loop m ω² A²) = c / R_loop from the measured
+  EMF alone.
 
-1. Before blaming the physics, compute the current your circuit actually allows, *I* = ε / *R*<sub>loop</sub>.
-2. A high-impedance input on a coil measures the EMF but brakes nothing. Give the braking current a known, low-resistance path.
-3. Don't trust a microcontroller's assumed sample rate. The 50/60 Hz hum already in your data is a free clock.
-4. Run an open-coil versus shorted-coil control, and check that the predicted effect exceeds your run-to-run scatter, before collecting a full data set.
-5. Compare the early and late halves of each decay. A single exponential fit can hide amplitude-dependent losses.
-
-<p align="center"><img src="docs/img/circuits.png" width="760" alt="Circuit as built versus corrected"></p>
+| Set | Runs | R_ext values | Use |
+|---|---|---|---|
+| Spring 1, coil 1 | 9 | 0 (×2), 33.6, 81.4, 324, 1051, 3180, 9610 Ω, 2.2 MΩ | main test |
+| Spring 2, coil 1 | 8 | 0 (×2), 33.3, 84.1, 327, 997, 3190, 9670 Ω | replication |
+| Springs 1–2, coils 2–3 | 4 | 0 Ω | coil geometry |
 
 ## Repository layout
 
-| Folder | Contents |
-|---|---|
-| `paper/` | Manuscript (`main.tex`, `references.bib`, `main.pdf`) and all figures, including the TikZ sources for the circuit and block diagrams |
-| `data/` | Raw DAQ dumps for every run (`spring_*/coil_*/<R_ext>/…csv`) plus screenshots taken at the time. Each line is `time_us,emf_uV`. **Timestamps are nominal; multiply by 1.261 for true time** (see paper, Lesson 2) |
-| `analysis/` | `run_all.sh` reproduces everything. `fit_decay.py` is the original peak-based fit; `round2/` holds the final fundamental-band Hilbert estimator, the alternative estimators and the significance tests; `clock_cal.py` is the mains-hum clock calibration. `final_table.csv` and `final_stats.json` are the outputs |
-| `code/` | DAQ firmware (`main.cpp`, Raspberry Pi Pico), servo release (`claw.cpp`, ESP32), live serial plotter (`serial_plotter.py`) |
-| `hardware/` | KiCad schematics (PDF), photos, and the original [DAQ build guide and bill of materials](hardware/DAQ_BUILD_GUIDE.md) |
-| `reviews/` | The internal review: four independent referee reports (physics, statistics, electronics, editor), a cross-examination round, and a blind final referee |
-| `docs/img/` | Images used in this README |
-
-## Reproduce the results
-
-```bash
-pip install numpy scipy matplotlib
-./analysis/run_all.sh      # about 5 minutes; writes analysis/final_*.{csv,json} and paper/figs/*.pdf
-cd paper && latexmk -pdf main.tex    # needs TeX Live with apa7, biblatex-apa, biber, circuitikz
+```
+Data/
+  Raw/                         one folder per run; each holds the DAQ dump (.csv) and a screenshot
+    spring_1/coil_1/Resistance/<R_ext>/
+    spring_1/coil_2/, spring_1/coil_3/
+    spring_2/coil_1/Resistance/<R_ext>/
+    spring_2/coil_2/, spring_2/coil_3/
+  Results/                     everything run_all.py produces
+    final_table.csv            per-run γ, SE, Q, f and initial EMF (Table A1)
+    final_stats.json           means, estimator comparison, 1/R fit, divider check, video check
+    clock_calibration.json     mains-hum frequency per run, clock factor s
+    decay_halves.json          early- vs late-half decay rates
+    Overall_Results.xlsx       the same results as one workbook
+    figures/                   Figures 3, 4, 6 and 7 (PDF and PNG)
+    logs/                      printed output of every script
+Code/
+  requirements.txt             pinned dependencies
+  Firmware/
+    main.cpp                   DAQ firmware (Raspberry Pi Pico, Arduino core)
+    claw.cpp                   servo release mechanism (ESP32)
+  Live Plotter/
+    serial_plotter.py          live serial plot used during the experiment
+  Analysis/
+    run_all.py                 runs everything below and writes Data/Results/
+    common.py                  paths, run list and shared helpers (not run directly)
+    fit_decay.py               loader and the original peak-based fit (not run directly)
+    clock_calibration.py       mains-hum clock factor
+    alternative_estimators.py  peak, per-cycle rms and nonlinear least-squares estimators
+    transduction_model.py      physical model of the coil's response
+    final_table.py             headline estimator, clock-corrected table
+    significance_tests.py      1/R fit (t, permutation, bootstrap), divider check
+    video_check.py             video-tracking cross-check of the clock
+    decay_halves.py            early- vs late-half decay
+    figures.py                 figures
+Hardware/
+  Schematics/                  KiCad schematics (DAQ, claw); as-built vs corrected circuit; signal-chain diagram
+  Photos/                      apparatus, coils and DAQ board
+  DAQ_Build_Guide.md           build notes and bill of materials (US$42.57)
 ```
 
-## Key numbers (spring 1, clock-corrected)
+## Expected headline output
+
+Running `run_all.py` on the data in this repository should give these values.
+
+| Result | Value |
+|---|---|
+| Clock factor s from mains hum (11 runs, SNR > 50) | 1.2613 ± 0.0047 (run scatter), ± 0.013 (grid) |
+| Spring 1 decay rate γ, 8 runs below 10 kΩ | (11.9 ± 0.5) × 10⁻³ s⁻¹ |
+| Spring 1 Q, f | 551 ± 24, 2.082 Hz |
+| Spring 2 decay rate γ | (13.5 ± 1.0) × 10⁻³ s⁻¹ |
+| Spring 2 Q, f | 436 ± 32, 1.862 Hz |
+| 1/R coefficient c, spring 1 (fit) | (-0.011 ± 0.006) Ω s⁻¹ |
+| c predicted for a loop closed through R_c + R_ext | +0.030 Ω s⁻¹ (≈ 17% of γ) |
+| Exclusion of the prediction, t-distribution with 6 df | 3.6σ (A exact), 2.3σ (σ_A = 20%); permutation p = 0.003 |
+| 2.2 MΩ divider, amplitude-corrected EMF ratio | 0.30 (predicted 0.31) |
+| Early/late decay ratio | 1.11 (spring 1), 1.19 (spring 2) |
+| γ vs initial EMF, Pearson r | -0.40 (spring 1), 0.97 (spring 2) |
+
+## Data dictionary
+
+**Raw DAQ dumps (`Data/Raw/**/YYYY-MM-DD-muino-data_dump.csv`).** These are plain text. A file may contain
+several captures, each opened by `STARTING CAPTURE...` and `BUTTON RELEASED, DUMPING DATA...` and
+closed by `DONE.`. The analysis uses the longest capture. Each data line is `time_us,emf_uV`:
+
+- `time_us`: nominal time, computed by the firmware as sample index × 500 µs. Multiply by s = 1.261 for
+  true time.
+- `emf_uV`: coil EMF referred to the amplifier input, in µV. Values sit on a 23.647 µV lattice, which is
+  2.7% coarser than the published firmware constants give (see Known issues).
+
+**Folder names** give the external series resistance in ohms (`0.0`, `33.6`, `3.18k`, `2.2M`, …).
+`Retake` folders are repeated runs at the same setting. The screenshot in each folder was taken from
+the live plotter at the time.
+
+**`final_table.csv`** has one row per run, with these columns:
+
+- `run`
+- `R_ext` (Ω)
+- `gamma_true` (10⁻³ s⁻¹)
+- `gamma_err` (block-bootstrap SE)
+- `Q`
+- `f_true` (Hz)
+- `eps_rms_init_mV`: the rms EMF over the first three cycles
+
+## Apparatus constants
 
 | Quantity | Value |
 |---|---|
-| Decay rate γ (8 runs, 15 Ω–9.6 kΩ) | (11.9 ± 0.5) × 10⁻³ s⁻¹ |
-| Quality factor Q | 551 ± 24 |
-| Oscillation frequency | 2.08 Hz |
-| Predicted EM share if the loop were closed via the coil | ≈ 17 % (9–25 %) |
-| Fitted 1/R coefficient *c* | (−0.011 ± 0.006) Ω s⁻¹ vs +0.030 predicted (disfavoured at 2.3–3σ) |
-| DAQ clock factor from mains hum | 1.261 ± 0.013 |
-| DAQ input noise (pre-release, rms) | 29–88 µV, median ≈ 48 µV |
+| Oscillating mass | 105 g (two NdFeB discs ≈ 4 cm × 0.7 cm, string cradle) |
+| Field at the coil (Hall probe) | 11 G |
+| Magnet–coil centre distance at rest | 6 cm |
+| Coil 1 | R_c = 15.2 Ω, inner diameter ≈ 5.6 cm, winding height ≈ 4 cm, ≈ 650 turns (estimated) |
+| Spring constants (force–extension slope) | 16.578 N/m and 19.438 N/m |
+| DAQ gain, input range, input step | 35, ±47 mV, 23.6 µV |
+| Amplifier input bias resistor R5 | 1 MΩ (the only path closing the coil loop) |
 
 ## Known issues and recommended fixes
 
@@ -88,13 +169,15 @@ while (digitalRead(BUTTON_PIN) == LOW && count < Max_Samples) {
 // V = (code / 4096.0f * VS - VREF) / GAIN
 ```
 
-All of these were found after the data were taken; the paper's numbers use the logged data as-is and quote these as uncertainties.
+All of these were found after the data were taken. The analysis uses the logged data as-is and treats these issues as uncertainties.
 
-## Credits and licence
+## Licence and citation
 
-- The DAQ hardware, firmware and original repository were built by the team during the internship; this repository continues [Umerr7/electromagnetic-damping-daq](https://github.com/Umerr7/electromagnetic-damping-daq) with its full commit history.
-- The custom serial plotter with Butterworth filtering is by Hardyesh Kumar.
-- Analysis and manuscript editing were assisted by an AI tool (Claude, Anthropic), as disclosed in the paper; the authors checked all results.
-- Code and hardware are released under the MIT licence (see `LICENSE`). Data and paper text: CC BY 4.0.
+- Code and hardware: MIT licence (see `LICENSE`).
+- Data: CC BY 4.0.
 
-**Contact:** Hassan Tariq Malik, hassantariq102938@gmail.com
+If you use this repository, please cite the paper:
+
+> Malik, H. T., Kumar, H., & Farooq, M. U. (2026). *No current, no braking: Two instrument lessons from a magnet–coil damping experiment* [Preprint].
+
+Contact: Hassan Tariq Malik, hassantariq102938@gmail.com
