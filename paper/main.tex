@@ -14,7 +14,7 @@
 
 % Items only the authors can supply appear in red. Switch to \showtodosfalse
 % once every one is resolved.
-\newif\ifshowtodos \showtodostrue
+\newif\ifshowtodos \showtodosfalse
 \newcommand{\todo}[1]{\ifshowtodos\textcolor{red}{[#1]}\fi}
 
 \title{No Current, No Braking: Two Instrument Lessons From a Magnet--Coil Damping Experiment}
@@ -26,9 +26,9 @@
 \leftheader{Malik et al.}
 
 \authornote{
-\addORCIDlink{Hassan Tariq Malik}{\todo{ORCID or delete}}
+\addORCIDlink{Hassan Tariq Malik}{0009-0001-3749-090X}
 
-This work was carried out during the 2026 Black Hole Science Internship Programme. M.~S.~Qureshi, S.~Manzoor and P.~Hoodbhoy supervised the project. Data, firmware, hardware design files and analysis code are openly available at \url{https://github.com/smash09x/magnet-spring-em-damping} \parencite{Repo2026}. The authors have no conflicts of interest to disclose. \todo{Confirm contributions.} Author contributions: H.~T.~Malik, conceptualization, theory, formal analysis and writing (original draft); H.~Kumar, analysis software and video tracking; M.~U.~Farooq, DAQ hardware and firmware, and data collection; M.~S.~Qureshi, S.~Manzoor and P.~Hoodbhoy, supervision. All authors reviewed the manuscript. We thank the staff of The Black Hole Science Lab, including Sayed Iqtidar Ali Shah, for help with the apparatus. An AI assistant (Claude, Anthropic) was used to reanalyse the raw data, including the fundamental-band decay estimator and the mains-hum clock calibration, to simulate independent referee reviews, and to edit the manuscript; the authors checked the analysis and text and take full responsibility for the content. \todo{archive a release on Zenodo and add its DOI to the data statement}
+This work was carried out during the 2026 Black Hole Science Internship Programme. M.~S.~Qureshi, S.~Manzoor and P.~Hoodbhoy supervised the project. Data, firmware, hardware design files and analysis code are openly available at \url{https://github.com/smash09x/magnet-spring-em-damping} \parencite{Repo2026}. The authors have no conflicts of interest to disclose. Author contributions: H.~T.~Malik, conceptualization, theory, formal analysis and writing (original draft); H.~Kumar, analysis software and video tracking; M.~U.~Farooq, DAQ hardware and firmware, and data collection; M.~S.~Qureshi, S.~Manzoor and P.~Hoodbhoy, supervision. All authors reviewed the manuscript. We thank the staff of The Black Hole Science Lab, including Sayed Iqtidar Ali Shah, for help with the apparatus. An AI assistant (Claude, Anthropic) was used to reanalyse the raw data, including the fundamental-band decay estimator and the mains-hum clock calibration, to simulate independent referee reviews, and to edit the manuscript; the authors checked the analysis and text and take full responsibility for the content.
 
 Correspondence concerning this article should be addressed to Hassan Tariq Malik, The Black Hole Science Lab, Islamabad, Pakistan. Email: \href{mailto:hassantariq102938@gmail.com}{hassantariq102938@gmail.com}}
 
@@ -76,7 +76,7 @@ A high-impedance amplifier measures the open-circuit EMF, so Equation~\ref{eq:ge
 
 \subsection{Apparatus}
 
-Two NdFeB disc magnets, stuck together, hung in a string cradle from a helical spring (Figure~\ref{fig:photos}a). The total oscillating mass was \SI{105}{g} \todo{magnet diameter, thickness and grade}. The magnet oscillated above a hand-wound coil of enamelled copper wire on a card former (coil~1, DC resistance $R_c = \SI{15.2}{\ohm}$) \todo{turns and mean radius of coil 1; height of the magnet's equilibrium position above the coil}. A servo-driven claw released the cradle from rest at a fixed height. Two springs were used. Their static spring constants, measured as $mg/x$, were \SI{16.578}{N/m} and \SI{19.438}{N/m} \todo{method and uncertainty}.
+Two NdFeB disc magnets, stuck together, hung in a string cradle from a helical spring (Figure~\ref{fig:photos}). The total oscillating mass was \SI{105}{g}. Each disc is about \SI{4}{cm} in diameter and \SI{0.7}{cm} thick, estimated from photographs against a metre rule; the grade was not recorded. A Hall probe gave \SI{11}{G} at the coil's position. The magnet oscillated above a hand-wound coil of enamelled copper wire on a card former (coil~1, DC resistance $R_c = \SI{15.2}{\ohm}$, inner diameter about \SI{5.6}{cm}, winding height about \SI{4}{cm}). At rest, the magnet's centre was $z_0 = \SI{6}{cm}$ above the coil's centre. The turns were not counted. Treating the magnet as a dipole that gives \SI{11}{G} at $z_0$, the measured EMF implies about 650 turns, which at this radius is about \SI{120}{m} of wire; together with $R_c$ this suggests wire about \SI{0.4}{mm} in diameter. None of these values enters the analysis, because Equation~\ref{eq:gem} uses the measured EMF directly. A servo-driven claw released the cradle from rest at a fixed height. Two springs were used. Their static spring constants, were \SI{16.578}{N/m} and \SI{19.438}{N/m}. Each was found from the slope of a force--extension graph for several hanging masses, with the extensions read twice, once by eye and once from a phone photograph.
 
 \begin{figure}[tbp]
 \centering
@@ -109,7 +109,6 @@ The DAQ has several limitations, which we found during this analysis:
 \item The ADC timestamps are not measured. They are computed as sample number $\times$ \SI{500}{\micro s}. This turned out to be wrong (Lesson~2 below).
 \item The op-amp runs from $\pm\SI{15}{V}$ rails. Under overload, the clamps can let the ADC pin exceed its absolute ratings. A single-supply rail-to-rail amplifier with Schottky clamps is safer \parencite{Horowitz2015}.
 \end{itemize}
-\todo{Electronics review: add exact firmware/gain cause of the 2.7\% step mismatch if identified}
 
 \subsection{Protocol}
 
@@ -185,7 +184,7 @@ Every recording contains a narrow line at \SI{63.07 \pm 0.23}{Hz}, with a harmon
 The correction divides every frequency and decay rate by $s$, while leaving $Q$ unchanged. Two independent checks agree with it:
 \begin{itemize}
 \item \textbf{Video.} The phone video runs on its own clock. The ratio of its decay rates to the DAQ values is $1.06 \pm 0.06$ with the clock correction and $0.84 \pm 0.05$ without it, so the video favours the correction. Because the per-run video rates scatter widely, this checks the overall scale only; counting oscillation cycles in the video would be a much tighter test.
-\item \textbf{Spring constants.} The corrected frequencies are \SI{2.08}{Hz} and \SI{1.86}{Hz}. Their ratio, 1.118, does not depend on $s$. It is consistent with the measured spring constants only if the two $k$ labels were interchanged (predicted 1.083). With the labels swapped, both frequencies lie 4--7\% below the static-$k$ predictions. Spring mass alone cannot account for that gap. Initial tension in close-wound springs, which makes $mg/x$ overestimate $k$, is a likely cause. The spring constants and the timebase will be re-measured \todo{direct timing check (GPIO toggle or micros() log) and re-measured $k$}.
+\item \textbf{Spring constants.} The corrected frequencies are \SI{2.08}{Hz} and \SI{1.86}{Hz}. Their ratio, 1.118, does not depend on $s$. It is consistent with the measured spring constants only if the two $k$ labels were interchanged (predicted 1.083). With the labels swapped, both frequencies lie 4--7\% below the static-$k$ predictions. Spring mass lowers the frequency by only about 1\%, and because $k$ came from the slope of a force--extension graph, initial tension in the spring does not bias it. The remaining gap is unexplained; an error in the oscillating mass or in the $k$ measurements is possible. Re-measuring $k$, and timing the DAQ directly, would settle both points; we could not repeat the measurements after the internship.
 \end{itemize}
 
 \subsection{The Damping That Remains Is Mechanical}
