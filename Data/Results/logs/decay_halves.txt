@@ -1,2 +1,2 @@
-S1 {'full': np.float64(11.887), 'early': np.float64(12.598), 'late': np.float64(11.359), 'ratio_mean': np.float64(1.111), 'ratio_sd': np.float64(0.117), 'n_early_faster': 7, 'n': 8}
+S1 {'full': np.float64(11.886), 'early': np.float64(12.598), 'late': np.float64(11.358), 'ratio_mean': np.float64(1.111), 'ratio_sd': np.float64(0.117), 'n_early_faster': 7, 'n': 8}
 S2 {'full': np.float64(13.491), 'early': np.float64(14.67), 'late': np.float64(12.34), 'ratio_mean': np.float64(1.191), 'ratio_sd': np.float64(0.061), 'n_early_faster': 8, 'n': 8}

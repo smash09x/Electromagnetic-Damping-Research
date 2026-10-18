@@ -1,20 +1,20 @@
 {
  "units": "gamma in 1e-3 s^-1 (true time), c in Ohm/s",
- "clock_s": 1.2613,
- "clock_s_sd_runs": 0.0047,
- "clock_s_grid_tol": 0.013,
+ "clock_s": 1.2613409090916081,
+ "clock_s_sd_runs": 0.004654665303857302,
+ "clock_s_grid_tol": 0.012613409090916081,
  "estimator": "Hilbert envelope of fundamental band 0.6-1.4f, window t0+1s..end-1s, 1 pt/cycle, 6-cycle block bootstrap",
  "S1": {
   "gamma": [
-   11.887,
+   11.886,
    0.495
   ],
   "g_peak": [
-   14.118,
+   14.117,
    0.463
   ],
   "g_rms": [
-   12.844,
+   12.843,
    0.476
   ],
   "g_nls": [
@@ -22,7 +22,7 @@
    0.526
   ],
   "g_phys": [
-   11.246,
+   11.245,
    0.523
   ],
   "early": [
@@ -30,19 +30,19 @@
    1.172
   ],
   "late": [
-   13.208,
+   13.207,
    0.336
   ],
   "gamma_at_ref_amp": {
    "A_ref_uV": 14748,
-   "mean": 11.358,
-   "sd": 0.786,
+   "mean": 11.357,
+   "sd": 0.787,
    "corr_with_eps": -0.17
   },
   "corr_gamma_eps_pearson": -0.398,
   "corr_gamma_eps_spearman": -0.286,
   "corr_lategamma_eps": 0.669,
-  "f_true_mean": 2.0821,
+  "f_true_mean": 2.082,
   "Q_mean": 551.2,
   "Q_sd": 24.0,
   "bootstrap_over_fitSE": 0.88
@@ -50,7 +50,7 @@
  "S2": {
   "gamma": [
    13.491,
-   0.954
+   0.955
   ],
   "g_peak": [
    16.609,
@@ -65,15 +65,15 @@
    0.97
   ],
   "g_phys": [
-   12.167,
+   12.166,
    0.634
   ],
   "early": [
-   18.789,
+   18.788,
    1.858
   ],
   "late": [
-   15.009,
+   15.008,
    1.324
   ],
   "gamma_at_ref_amp": {
@@ -85,10 +85,10 @@
   "corr_gamma_eps_pearson": 0.967,
   "corr_gamma_eps_spearman": 0.976,
   "corr_lategamma_eps": 0.94,
-  "f_true_mean": 1.8622,
+  "f_true_mean": 1.8621,
   "Q_mean": 435.6,
   "Q_sd": 31.7,
-  "bootstrap_over_fitSE": 0.91
+  "bootstrap_over_fitSE": 0.92
  },
  "S1_cfit": {
   "model": "gamma = gamma0 + c/(Rc+Rext), OLS (equal weights = run-to-run scatter, residual-scaled), Student t",
@@ -96,7 +96,7 @@
   "c_pred_note": "energy method, eps_rms first 3 cycles, true omega, A=2.2 cm (no sigma_A)",
   "gamma_em_pred_at_Rc_1e3": 1.995,
   "gamma_em_frac_of_gamma": 0.168,
-  "gamma_em_as_built_1e3": 3.0318664378147556e-05,
+  "gamma_em_as_built_1e3": 3.0320631125364888e-05,
   "n8_lt10k": {
    "c": -0.01077,
    "c_err": 0.00554,
@@ -116,8 +116,8 @@
     "p_one_sided": 0.0108,
     "gauss_equiv": 2.3
    },
-   "perm_p": 0.003,
-   "perm_gauss_equiv": 2.75,
+   "perm_p": 0.0032,
+   "perm_gauss_equiv": 2.73,
    "loo_gauss_equiv_range": [
     3.21,
     3.62
@@ -125,7 +125,7 @@
   },
   "n9_incl_2M2": {
    "c": -0.00899,
-   "c_err": 0.0056,
+   "c_err": 0.00559,
    "dof": 7,
    "sigmaA_0pct": {
     "z": 7.03,
@@ -146,7 +146,7 @@
    "perm_gauss_equiv": 2.75
   },
   "n7_0ohm_avg": {
-   "c": -0.01049,
+   "c": -0.01048,
    "c_err": 0.00514,
    "dof": 5,
    "sigmaA_0pct": {

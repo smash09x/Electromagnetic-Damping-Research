@@ -8,7 +8,7 @@ common Aref 13000 S2 12.60 +- 0.71
  "c_pred_note": "energy method, eps_rms first 3 cycles, true omega, A=2.2 cm (no sigma_A)",
  "gamma_em_pred_at_Rc_1e3": 1.995,
  "gamma_em_frac_of_gamma": 0.168,
- "gamma_em_as_built_1e3": 3.0318664378147556e-05,
+ "gamma_em_as_built_1e3": 3.0320631125364888e-05,
  "n8_lt10k": {
   "c": -0.01077,
   "c_err": 0.00554,
@@ -28,8 +28,8 @@ common Aref 13000 S2 12.60 +- 0.71
    "p_one_sided": 0.0108,
    "gauss_equiv": 2.3
   },
-  "perm_p": 0.003,
-  "perm_gauss_equiv": 2.75,
+  "perm_p": 0.0032,
+  "perm_gauss_equiv": 2.73,
   "loo_gauss_equiv_range": [
    3.21,
    3.62
@@ -37,7 +37,7 @@ common Aref 13000 S2 12.60 +- 0.71
  },
  "n9_incl_2M2": {
   "c": -0.00899,
-  "c_err": 0.0056,
+  "c_err": 0.00559,
   "dof": 7,
   "sigmaA_0pct": {
    "z": 7.03,
@@ -58,7 +58,7 @@ common Aref 13000 S2 12.60 +- 0.71
   "perm_gauss_equiv": 2.75
  },
  "n7_0ohm_avg": {
-  "c": -0.01049,
+  "c": -0.01048,
   "c_err": 0.00514,
   "dof": 5,
   "sigmaA_0pct": {
