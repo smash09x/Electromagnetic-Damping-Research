@@ -1,10 +1,12 @@
-# Electromagnetic Damping: A Closer Look at a Contactless Braking System
+# Why our magnet–coil damping experiment showed no damping: an open loop and a slow clock
 
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.23448904.svg)](https://doi.org/10.5281/zenodo.23448904)
 
-Data and code for a study of electromagnetic damping in a magnet–spring oscillator. It tests whether the
-damping falls as 1/R when resistance is added to the coil circuit, using a low-cost
-Raspberry Pi Pico data-acquisition system (DAQ).
+Data and code for a study of electromagnetic damping in a magnet–spring oscillator. It set out to test whether
+the damping falls as 1/R when resistance is added to the coil circuit, using a low-cost Raspberry Pi Pico
+data-acquisition system (DAQ). The coil circuit turned out to be closed only through the amplifier's 1 MΩ bias
+resistor, so the 1/R hypothesis could not be tested; the repository documents that diagnosis, a second error in the
+DAQ's timebase, and the mechanical damping that was actually measured.
 
 Author: Hassan Tariq Malik ([ORCID 0009-0001-3749-090X](https://orcid.org/0009-0001-3749-090X)) · Co-authors: Hardyesh Kumar, Muhammad Umer Farooq
 The Black Hole Science Internship Programme 2026, Islamabad
@@ -108,12 +110,16 @@ Running `run_all.py` on the data in this repository should give these values.
 | Spring 1 Q, f | 551 ± 24, 2.082 Hz |
 | Spring 2 decay rate γ | (13.5 ± 1.0) × 10⁻³ s⁻¹ |
 | Spring 2 Q, f | 436 ± 32, 1.862 Hz |
-| 1/R coefficient c, spring 1 (fit) | (-0.011 ± 0.006) Ω s⁻¹ |
-| c predicted for a loop closed through R_c + R_ext | +0.030 Ω s⁻¹ (≈ 17% of γ) |
-| Exclusion of the prediction, t-distribution with 6 df | 3.6σ (A exact), 2.3σ (σ_A = 20%); permutation p = 0.003 |
-| 2.2 MΩ divider, amplitude-corrected EMF ratio | 0.30 (predicted 0.31) |
+| 1/R coefficient c, spring 1 (fit) | (-0.011 ± 0.006) Ω s⁻¹, consistent with the as-built prediction c = 0 (two-sided p = 0.10) |
+| 1/R coefficient c at a common EMF amplitude (14.7 mV) | (+0.011 ± 0.010) Ω s⁻¹ |
+| c predicted if the loop had been closed through R_c + R_ext | +0.030 Ω s⁻¹ (γ_em ≈ 2.0 × 10⁻³ s⁻¹, ≈ 18% of the video damping) |
+| 2.2 MΩ divider, EMF ratio to the low-R runs | raw 0.245 ± 0.015; 0.30 after correcting for the smaller release (extrapolated); predicted 0.31 (0.29–0.33) |
 | Early/late decay ratio (EMF envelope) | 1.11 (spring 1), 1.19 (spring 2) |
 | γ vs initial EMF, Pearson r | -0.40 (spring 1), 0.97 (spring 2) |
+
+`final_stats.json` also contains t, permutation and leave-one-out tests of the fit against the closed-loop
+prediction. Those compare the data with a circuit that was not built, so they do not by themselves show that the
+loop was open; the paper reports them only in an appendix.
 
 ## Data dictionary
 
@@ -195,10 +201,12 @@ All of these were found after the data were taken. The analysis uses the logged 
 - Code and hardware: MIT licence (see `LICENSE`).
 - Data: CC BY 4.0.
 
-The data and code (v1.0) are archived on Zenodo: Malik, H. T., Kumar, H., & Farooq, M. U. (2026). *Electromagnetic-Damping-Research: Data, firmware, hardware and analysis code* (Version v1.0) [Computer software]. Zenodo. https://doi.org/10.5281/zenodo.23448904
+Releases are archived on Zenodo. Version v1.0: Malik, H. T., Kumar, H., & Farooq, M. U. (2026). *Electromagnetic-Damping-Research: Data, firmware, hardware and analysis code* (Version v1.0) [Computer software]. Zenodo. https://doi.org/10.5281/zenodo.23448904
 
 If you use this repository, please also cite the paper:
 
-> Malik, H. T., Kumar, H., & Farooq, M. U. (2026). *Electromagnetic damping: A closer look at a contactless braking system* [Preprint].
+> Malik, H. T., Kumar, H., & Farooq, M. U. (2026). *Why our magnet–coil damping experiment showed no damping: An open loop and a slow clock* [Manuscript submitted for publication].
+
+An earlier version of the paper, titled *Electromagnetic damping: A closer look at a contactless braking system*, is available as a preprint at https://doi.org/10.5281/zenodo.23449036.
 
 Contact: Hassan Tariq Malik, hassantariq102938@gmail.com

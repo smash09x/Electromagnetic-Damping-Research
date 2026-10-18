@@ -7,7 +7,7 @@
 % ---------- (a) as built ----------
 \node[font=\bfseries] at (2.8,3.3) {(a) As built};
 \draw (0,0) to[L, l^={\shortstack{coil 1\\ $R_c=\SI{15.2}{\ohm}$}}] (0,2.4)
-      to[R, l={$R_{\rm ext}$ (0--\SI{9.6}{k\ohm})}] (2.6,2.4) -- (3.2,2.4) node[circ]{} coordinate(sig);
+      to[R, l={$R_{\rm ext}$ (0--\SI{9.6}{k\ohm}; one run \SI{2.2}{M\ohm})}] (2.6,2.4) -- (3.2,2.4) node[circ]{} coordinate(sig);
 \draw (0,0) -- (3.2,0) node[circ]{} coordinate(ref);
 \draw[very thick,red!70!black] (sig) to[R, l={$R_5=\SI{1}{M\ohm}$}, color=red!70!black] (ref);
 \draw (sig) -- (5.4,2.4) node[op amp, noinv input up, anchor=+](oa){};
