@@ -1,5 +1,7 @@
 # Electromagnetic Damping: A Closer Look at a Contactless Braking System
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.23448904.svg)](https://doi.org/10.5281/zenodo.23448904)
+
 Data and code for a study of electromagnetic damping in a magnet–spring oscillator. It tests whether the
 damping falls as 1/R when resistance is added to the coil circuit, using a low-cost
 Raspberry Pi Pico data-acquisition system (DAQ).
@@ -193,7 +195,9 @@ All of these were found after the data were taken. The analysis uses the logged 
 - Code and hardware: MIT licence (see `LICENSE`).
 - Data: CC BY 4.0.
 
-If you use this repository, please cite the paper:
+The data and code (v1.0) are archived on Zenodo: Malik, H. T., Kumar, H., & Farooq, M. U. (2026). *Electromagnetic-Damping-Research: Data, firmware, hardware and analysis code* (Version v1.0) [Computer software]. Zenodo. https://doi.org/10.5281/zenodo.23448904
+
+If you use this repository, please also cite the paper:
 
 > Malik, H. T., Kumar, H., & Farooq, M. U. (2026). *Electromagnetic damping: A closer look at a contactless braking system* [Preprint].
 
