@@ -1,12 +1,12 @@
-"""Final figures (true time axis, s = 1.261 clock correction; fundamental-band Hilbert gamma)."""
+"""Final figures (true time axis, clock factor s from clock_calibration.json; fundamental-band Hilbert gamma)."""
 import os, sys, glob, csv, json, numpy as np, matplotlib
 matplotlib.use("Agg"); import matplotlib.pyplot as plt
 from scipy.signal import butter, filtfilt, hilbert, sosfiltfilt
-from common import D, RES
+from common import D, RES, RC, clock
 from fit_decay import load
 tab, st = os.path.join(RES, 'final_table.csv'), os.path.join(RES, 'final_stats.json')
 out = os.path.join(RES, 'figures'); os.makedirs(out, exist_ok=True)
-S = 1.2613; RC = 15.2
+S = clock()[0]
 plt.rcParams.update({"font.family":"serif","font.size":9,"axes.spines.top":False,"axes.spines.right":False,
   "axes.edgecolor":"#555","axes.labelcolor":"#222","xtick.color":"#555","ytick.color":"#555","axes.grid":True,
   "grid.color":"#e6e6e6","grid.linewidth":0.6,"legend.frameon":False,"savefig.bbox":"tight"})
@@ -44,7 +44,7 @@ fig.savefig(f"{out}/gamma_vs_amp.pdf"); fig.savefig(f"{out}/gamma_vs_amp.png", d
 
 # Fig: example trace with fundamental-band envelope, true time
 p = glob.glob(D + "spring_1/coil_1/Resistance/0.0/Retake 2/*.csv")[0]
-t, v = load(p); t = t*S; fs = 1/np.median(np.diff(t)); f0 = 2.0834
+t, v = load(p); t = t*S; fs = 1/np.median(np.diff(t)); f0 = J["S1"]["f_true_mean"]
 b, a = butter(4, 20/(fs/2)); vf = filtfilt(b, a, v)*1e-3; vf -= np.median(vf[:int(0.3*fs)])
 sos = butter(4, [0.6*f0, 1.4*f0], 'band', fs=fs, output='sos'); xf = sosfiltfilt(sos, vf); env = np.abs(hilbert(xf))
 fig, ax = plt.subplots(2, 1, figsize=(3.5, 3.6), gridspec_kw=dict(height_ratios=[2, 1.3], hspace=0.55))
@@ -67,7 +67,9 @@ b, a = butter(4, 15/(fs/2), 'high'); h = filtfilt(b, a, v)
 f, P = welch(h, fs=fs, nperseg=16384)
 fig, ax = plt.subplots(figsize=(3.5, 2.2))
 ax.semilogy(f, P, color=C1, lw=0.8); ax.set_xlim(20, 160); mm=(f>20)&(f<160); ax.set_ylim(P[mm].min()*0.5, P[mm].max()*20)
-for x, l in ((63.07, "63.1 Hz"), (126.1, "126.1 Hz")): ax.annotate(l, (x, P[np.argmin(abs(f-x))]), xytext=(6, -2), textcoords="offset points", fontsize=7)
+CK = json.load(open(os.path.join(RES, "clock_calibration.json")))
+fl = [r["f_hum"] for r in CK["runs"] if r["run"].endswith("2.2M")][0]
+for x, l in ((fl, f"{fl:.1f} Hz"), (2*fl, f"{2*fl:.1f} Hz")): ax.annotate(l, (x, P[np.argmin(abs(f-x))]), xytext=(6, -2), textcoords="offset points", fontsize=7)
 ax.axvline(50, color=GR, ls=":", lw=1); ax.text(48.5, P[mm].max()*2, "50 Hz (true mains)", fontsize=6.5, color=GR, ha="right")
 ax.set_xlabel("Frequency on the firmware's nominal timebase (Hz)"); ax.set_ylabel(r"PSD ($\mu$V$^2$/Hz)")
 fig.savefig(f"{out}/hum.pdf"); fig.savefig(f"{out}/hum.png", dpi=200)

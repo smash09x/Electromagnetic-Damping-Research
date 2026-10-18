@@ -1,0 +1,12 @@
+{
+  "title": "Electromagnetic-Damping-Research: Data, firmware, hardware and analysis code",
+  "upload_type": "software",
+  "description": "Raw DAQ records, phone-video tracks with true frame times, DAQ firmware and schematics, and the analysis code that reproduces every number, table and figure in the paper 'Electromagnetic Damping: A Closer Look at a Contactless Braking System' (Malik, Kumar and Farooq, 2026). Run Code/Analysis/run_all.py.",
+  "creators": [
+    {"name": "Malik, Hassan Tariq", "orcid": "0009-0001-3749-090X", "affiliation": "The Black Hole Science Lab, Islamabad"},
+    {"name": "Kumar, Hardyesh", "affiliation": "The Black Hole Science Lab, Islamabad"},
+    {"name": "Farooq, Muhammad Umer", "affiliation": "The Black Hole Science Lab, Islamabad"}
+  ],
+  "license": "MIT",
+  "keywords": ["electromagnetic induction", "damping", "Lenz's law", "data acquisition", "Raspberry Pi Pico", "physics education"]
+}

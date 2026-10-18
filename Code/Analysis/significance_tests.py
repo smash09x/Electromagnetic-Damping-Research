@@ -1,7 +1,7 @@
 from common import *
 import json
 from scipy import stats
-S=1.2613; RC=15.2; m=0.105; A=0.022
+S=clock()[0]; m=M_OSC; A=A_INIT
 rows=json.load(open(os.path.join(OUT,'final_rows.json'))); out=json.load(open(os.path.join(OUT,'_tmp.json')))
 def gref(r,Aref):
     L=np.array(r['loc']); b=np.polyfit(L[:,0],L[:,1],1); return np.polyval(b,Aref)

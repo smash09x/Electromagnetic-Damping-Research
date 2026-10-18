@@ -13,16 +13,18 @@ Research supervisors: M. Sanan Qureshi, Dr Sadia Manzoor (COMSATS University Isl
 ```bash
 pip install -r Code/requirements.txt
 cd Code/Analysis
-python run_all.py
+python run_all.py        # or python3, depending on your system
 ```
 
 `run_all.py` runs every analysis script in order on the raw DAQ dumps in `Data/Raw/`. It writes the
 results, the figures, a combined workbook (`Overall_Results.xlsx`) and each script's printed output to
-`Data/Results/`.
+`Data/Results/`. Later scripts read intermediate files from `Code/Analysis/out/`, so run
+`run_all.py` rather than single scripts. The only step it does not run is `check_video_clocks.py`, which
+needs the original videos and FFmpeg; its outputs (`Data/Video/frame_times/`) are committed.
 
 ## What is measured
 
-A pair of NdFeB magnets (105 g in total) hangs on a spring and oscillates about 6 cm above a hand-wound coil.
+A plated NdFeB cup magnet with a disc on its face (105 g oscillating mass) hangs on a spring and oscillates about 6 cm above a hand-wound coil.
 The DAQ amplifies the coil's EMF 35× and records it at a nominal 2 kS/s.
 
 - **Outcome:** the decay rate γ of the oscillation. It is fitted to the Hilbert envelope of the
@@ -31,7 +33,8 @@ The DAQ amplifies the coil's EMF 35× and records it at a nominal 2 kS/s.
   and three coils.
 - **Clock correction:** the firmware's sampling loop could not keep its 10 µs schedule. The 50 Hz mains
   line appears at 63.07 Hz on the firmware's timebase, so all times are multiplied by
-  s = 1.2613 (± 0.013, grid tolerance). Every value below is clock-corrected.
+  s = 1.2613 (± 0.013, grid tolerance), read by every script from `clock_calibration.json`. The phone
+  videos give s = 1.2618 ± 0.0003 independently. Every value below is clock-corrected.
 - **Prediction:** the energy method gives γ_em = ⟨ε²⟩ / (R_loop m ω² A²) = c / R_loop from the measured
   EMF alone.
 
@@ -50,11 +53,16 @@ Data/
     spring_1/coil_2/, spring_1/coil_3/
     spring_2/coil_1/Resistance/<R_ext>/
     spring_2/coil_2/, spring_2/coil_3/
+  Video/                       phone-video tracks: VID-*.csv (time_s, vertical_distance_m)
+    frame_times/               true time of every video frame (ffprobe); the tracks assume even spacing
   Results/                     everything run_all.py produces
     final_table.csv            per-run γ, SE, Q, f and initial EMF (Table A1)
     final_stats.json           means, estimator comparison, 1/R fit, divider check, video check
     clock_calibration.json     mains-hum frequency per run, clock factor s
     decay_halves.json          early- vs late-half decay rates
+    video_analysis.json        video frequencies, clock factor from video, decay of the motion (Table A2)
+    supporting_numbers.json    ADC step, noise, dipole moment and turns, air drag, time per ADC read
+    video_clock_check.json     per-video frame-clock check (from check_video_clocks.py)
     Overall_Results.xlsx       the same results as one workbook
     figures/                   Figures 3, 4, 6 and 7 (PDF and PNG)
     logs/                      printed output of every script
@@ -74,9 +82,11 @@ Code/
     transduction_model.py      physical model of the coil's response
     final_table.py             headline estimator, clock-corrected table
     significance_tests.py      1/R fit (t, permutation, bootstrap), divider check
-    video_check.py             video-tracking cross-check of the clock
+    video_analysis.py          video tracks timed with true frame times: clock check, decay of the motion
     decay_halves.py            early- vs late-half decay
+    supporting_numbers.py      smaller numbers quoted in the paper (step, noise, turns, drag, 12.6 us/read)
     figures.py                 figures
+    check_video_clocks.py      ffprobe frame-clock check; needs the original .mp4 files (not run by run_all.py)
 Hardware/
   Schematics/                  KiCad schematics (DAQ, claw); as-built vs corrected circuit; signal-chain diagram
   Photos/                      apparatus, coils and DAQ board
@@ -90,6 +100,8 @@ Running `run_all.py` on the data in this repository should give these values.
 | Result | Value |
 |---|---|
 | Clock factor s from mains hum (11 runs, SNR > 50) | 1.2613 ± 0.0047 (run scatter), ± 0.013 (grid) |
+| Clock factor s from video (spring 1, spring 2) | 1.2618 ± 0.0003, 1.2618 ± 0.0001 |
+| Decay of the motion, spring 1 videos (7) | (11.31 ± 0.30) × 10⁻³ s⁻¹, Q ≈ 580, early/late (video) 1.08 ± 0.04 |
 | Spring 1 decay rate γ, 8 runs below 10 kΩ | (11.9 ± 0.5) × 10⁻³ s⁻¹ |
 | Spring 1 Q, f | 551 ± 24, 2.082 Hz |
 | Spring 2 decay rate γ | (13.5 ± 1.0) × 10⁻³ s⁻¹ |
@@ -98,7 +110,7 @@ Running `run_all.py` on the data in this repository should give these values.
 | c predicted for a loop closed through R_c + R_ext | +0.030 Ω s⁻¹ (≈ 17% of γ) |
 | Exclusion of the prediction, t-distribution with 6 df | 3.6σ (A exact), 2.3σ (σ_A = 20%); permutation p = 0.003 |
 | 2.2 MΩ divider, amplitude-corrected EMF ratio | 0.30 (predicted 0.31) |
-| Early/late decay ratio | 1.11 (spring 1), 1.19 (spring 2) |
+| Early/late decay ratio (EMF envelope) | 1.11 (spring 1), 1.19 (spring 2) |
 | γ vs initial EMF, Pearson r | -0.40 (spring 1), 0.97 (spring 2) |
 
 ## Data dictionary
@@ -111,6 +123,11 @@ closed by `DONE.`. The analysis uses the longest capture. Each data line is `tim
   true time.
 - `emf_uV`: coil EMF referred to the amplifier input, in µV. Values sit on a 23.647 µV lattice, which is
   2.7% coarser than the published firmware constants give (see Known issues).
+
+**Video tracks (`Data/Video/VID-*.csv`).** `time_s` assumes evenly spaced frames at the file's average
+frame rate; the videos actually have a variable frame rate (intervals of about 33 and 36 ms), so
+`video_analysis.py` re-times each track with `frame_times/VID-*.csv`. The ~10 MB videos are not included
+(available from the corresponding author).
 
 **Folder names** give the external series resistance in ohms (`0.0`, `33.6`, `3.18k`, `2.2M`, …).
 `Retake` folders are repeated runs at the same setting. The screenshot in each folder was taken from
@@ -130,12 +147,12 @@ the live plotter at the time.
 
 | Quantity | Value |
 |---|---|
-| Oscillating mass | 105 g (two NdFeB discs ≈ 4 cm × 0.7 cm, string cradle) |
+| Oscillating mass | 105 g (NdFeB cup magnet ≈ Ø41 × 7 mm with a Ø30 mm disc, string cradle) |
 | Field at the coil (Hall probe) | 11 G |
 | Magnet–coil centre distance at rest | 6 cm |
-| Coil 1 | R_c = 15.2 Ω, inner diameter ≈ 5.6 cm, winding height ≈ 4 cm, ≈ 650 turns (estimated) |
+| Coil 1 | R_c = 15.2 Ω, inner diameter ≈ 5.6 cm, winding height ≈ 4 cm, ≈ 550 turns (estimated from the EMF; 430–810 from the resistance) |
 | Spring constants (force–extension slope) | 16.578 N/m and 19.438 N/m |
-| DAQ gain, input range, input step | 35, ±47 mV, 23.6 µV |
+| DAQ gain, input range, input step | 35, ±47 mV, 23.647 µV |
 | Amplifier input bias resistor R5 | 1 MΩ (the only path closing the coil loop) |
 
 ## Known issues and recommended fixes

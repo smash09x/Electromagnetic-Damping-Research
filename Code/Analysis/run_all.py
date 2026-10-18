@@ -3,7 +3,9 @@
 Usage:  python run_all.py
 Reads   Data/Raw/
 Writes  Data/Results/  (final_table.csv, final_stats.json, clock_calibration.json,
-        decay_halves.json, Overall_Results.xlsx, figures/, logs/)
+        decay_halves.json, video_analysis.json, supporting_numbers.json, Overall_Results.xlsx, figures/, logs/)
+The video frame times in Data/Video/frame_times/ come from the original .mp4 files via
+check_video_clocks.py (needs the videos and ffprobe; not part of this run).
 """
 import csv, json, os, subprocess, sys
 
@@ -20,6 +22,7 @@ STEPS = [
     ("significance_tests.py",     "1/R fit, significance and 2.2 MOhm divider check"),
     ("video_analysis.py",         "Video tracks: independent clock check and decay of the motion"),
     ("decay_halves.py",           "Early- vs late-half decay rates"),
+    ("supporting_numbers.py",     "ADC step, noise, turns, air drag, time per read"),
     ("figures.py",                "Figures"),
 ]
 
@@ -48,6 +51,17 @@ ws2.append([]); ws2.append(["1/R fit (spring 1): c measured (Ohm/s)", c["n8_lt10
 ws2.append(["c predicted (Ohm/s)", c["c_pred"]])
 ws2.append(["2.2 MOhm divider: amplitude-corrected ratio", st["divider_2M2"]["ratio_amp_corrected"], "predicted", st["divider_2M2"]["predicted"]])
 clk = json.load(open(os.path.join(RES, "clock_calibration.json")))
-ws2.append(["Clock factor s (mains hum)", clk["s"], clk["s_sd"]])
+ws2.append(["Clock factor s (mains hum): value, run sd, grid tolerance", clk["s"], clk["s_sd"], clk["s_grid_tol"]])
+vid = json.load(open(os.path.join(RES, "video_analysis.json")))
+for sp in (1, 2):
+    o = vid[f"spring{sp}"]
+    ws2.append([f"Clock factor s (video, spring {sp})", o["s_video"], o["s_video_se"]])
+o = vid["spring1"]
+ws2.append(["Decay of the motion, spring 1 video (1e-3 /s): mean, sd", o["gamma_video_mean"], o["gamma_video_sd"]])
+ws3 = wb.create_sheet("Video tracks")
+keys = ["video", "spring", "fps", "frame_dt_sd_ms", "f_even_spacing", "f", "gamma", "gamma_se", "early", "late", "A0_cm", "resid_mm", "passes_tracking_cut"]
+ws3.append(keys)
+for r in vid["videos"]:
+    ws3.append([r[k] for k in keys])
 wb.save(os.path.join(RES, "Overall_Results.xlsx"))
 print("done:", RES)
