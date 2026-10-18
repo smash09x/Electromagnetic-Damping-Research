@@ -2,7 +2,7 @@
 from common import *
 from scipy.signal import butter as bt, sosfiltfilt
 import json
-S=1.2613; out={}
+S=clock()[0]; out={}
 for sp,R,s,p in runs():
     if sp not in ('S1','S2') or R>1e5: continue
     t,v,x,fs=prep(p); t=t*S; f0=authors_fit(p)['f']/S; fsT=fs/S

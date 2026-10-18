@@ -1,0 +1,17 @@
+cff-version: 1.2.0
+message: "If you use this repository, please cite it as below."
+title: "Electromagnetic-Damping-Research: Data, firmware, hardware and analysis code"
+type: software
+authors:
+  - family-names: Malik
+    given-names: Hassan Tariq
+    orcid: "https://orcid.org/0009-0001-3749-090X"
+    email: hassantariq102938@gmail.com
+  - family-names: Kumar
+    given-names: Hardyesh
+  - family-names: Farooq
+    given-names: Muhammad Umer
+repository-code: "https://github.com/smash09x/Electromagnetic-Damping-Research"
+license: MIT
+date-released: "2026-10-18"
+keywords: [electromagnetic induction, damping, Lenz's law, data acquisition, Raspberry Pi Pico, physics education]

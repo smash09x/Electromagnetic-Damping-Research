@@ -1,0 +1,38 @@
+{
+ "adc_step_uV": 23.647,
+ "adc_step_spread_uV": 1.756120823870333e-06,
+ "adc_step_published_uV": 23.025,
+ "adc_step_excess_pct": 2.7,
+ "noise_coil1_lt10k_uV": {
+  "n": 16,
+  "min": 29,
+  "max": 87,
+  "median": 47
+ },
+ "noise_all21_uV": {
+  "n": 21,
+  "min": 13,
+  "max": 1433,
+  "median": 45
+ },
+ "noise_over_signal": 0.0029,
+ "release_2M2_smaller_pct": 19.1,
+ "dipole_moment_Am2": 1.19,
+ "turns_from_emf": {
+  "A=2.0cm,w=2mm": 634,
+  "A=2.0cm,w=5mm": 627,
+  "A=2.2cm,w=2mm": 549,
+  "A=2.2cm,w=5mm": 545,
+  "A=2.4cm,w=2mm": 478,
+  "A=2.4cm,w=5mm": 476
+ },
+ "turns_from_emf_central": 547,
+ "turns_from_resistance_range": [
+  428,
+  807
+ ],
+ "drag_gamma_1e3": 1.08,
+ "drag_frac_of_gamma_video": 0.095,
+ "stored_point_spacing_us": 630.7,
+ "time_per_read_us": 12.61
+}

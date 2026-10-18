@@ -5,8 +5,7 @@ from common import *
 from scipy.signal import butter as bt, sosfiltfilt
 from scipy import stats
 import json, csv
-S, S_SD = 1.2613, 0.0047          # clock.json (n=11 runs, SNR>50)
-S_GRID = 0.013                    # +/-1% grid tolerance
+S, S_SD, S_GRID = clock()         # from clock_calibration.json (mains-hum line, n=11 runs)
 rng = np.random.default_rng(7)
 def lin(tt, y):
     p, c = np.polyfit(tt, y, 1, cov=True); return -p[0], np.sqrt(c[0, 0]), p

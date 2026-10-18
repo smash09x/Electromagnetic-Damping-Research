@@ -5,29 +5,29 @@
 \begin{document}
 \begin{circuitikz}[font=\small]
 % ---------- (a) as built ----------
-\node[font=\bfseries] at (2.6,3.3) {(a) As built};
-\draw (0,0) to[L, l^={coil ($\varepsilon$, $R_c$)}] (0,2.4)
-      to[R, l={$R_{\rm ext}$}] (2.6,2.4) -- (3.2,2.4) node[circ]{} coordinate(sig);
+\node[font=\bfseries] at (2.8,3.3) {(a) As built};
+\draw (0,0) to[L, l^={\shortstack{coil 1\\ $R_c=\SI{15.2}{\ohm}$}}] (0,2.4)
+      to[R, l={$R_{\rm ext}$ (0--\SI{9.6}{k\ohm})}] (2.6,2.4) -- (3.2,2.4) node[circ]{} coordinate(sig);
 \draw (0,0) -- (3.2,0) node[circ]{} coordinate(ref);
 \draw[very thick,red!70!black] (sig) to[R, l={$R_5=\SI{1}{M\ohm}$}, color=red!70!black] (ref);
-\draw (sig) -- (5.0,2.4) node[op amp, noinv input up, anchor=+](oa){};
-\draw (oa.-) |- ++(0,-0.6) node[right,font=\scriptsize]{gain 35};
+\draw (sig) -- (5.4,2.4) node[op amp, noinv input up, anchor=+](oa){};
+\draw (oa.-) |- ++(0,-0.6) node[below,font=\scriptsize,align=center]{OPA2134\\ gain 35};
 \draw (oa.out) -- ++(0.4,0) node[right]{ADC};
 \draw (ref) -- ++(0,-0.4) node[below,font=\scriptsize]{\SI{1.65}{V} ref};
-\node[align=center,font=\scriptsize,text=red!70!black] at (1.6,-1.2) {loop closed only via $R_5$:\\ $I\approx\varepsilon/\SI{1}{M\ohm}\approx\SI{16}{nA}$};
-% ---------- (b) corrected ----------
-\begin{scope}[xshift=9cm]
-\node[font=\bfseries] at (2.6,3.3) {(b) Corrected};
-\draw (0,0) to[L, l^={coil ($\varepsilon$, $R_c$)}] (0,2.4) -- (1.8,2.4) node[circ]{} coordinate(a)
-      -- (3.2,2.4) node[circ]{} coordinate(sig);
-\draw (0,0) -- (1.8,0) node[circ]{} coordinate(b) -- (3.2,0) node[circ]{} coordinate(ref);
-\draw[very thick,blue!60!black] (a) to[R, l_={$R_{\rm load}$}, color=blue!60!black] (b);
-\draw (sig) to[R, l={$R_5$}] (ref);
-\draw (sig) -- (5.0,2.4) node[op amp, noinv input up, anchor=+](ob){};
-\draw (ob.-) |- ++(0,-0.6) node[right,font=\scriptsize]{gain 35};
+\node[align=center,font=\scriptsize,text=red!70!black] at (1.4,-1.2) {loop closed only via $R_5$:\\ $I\approx\varepsilon/\SI{1}{M\ohm}\approx\SI{16}{nA}$};
+% ---------- (b) proposed ----------
+\begin{scope}[xshift=10.2cm]
+\node[font=\bfseries] at (2.8,3.3) {(b) Proposed (untested)};
+\draw (0,0) to[L, l^={\shortstack{coil 1\\ $R_c=\SI{15.2}{\ohm}$}}] (0,2.4) -- (1.5,2.4) node[circ]{} coordinate(a)
+      -- (3.6,2.4) node[circ]{} coordinate(sig);
+\draw (0,0) -- (1.5,0) node[circ]{} coordinate(b) -- (3.6,0) node[circ]{} coordinate(ref);
+\draw[very thick,blue!60!black] (a) to[R, l={\shortstack{$R_{\rm load}$\\ 0--\SI{33}{\ohm}}}, color=blue!60!black] (b);
+\draw (sig) to[R, l={$R_5=\SI{1}{M\ohm}$}] (ref);
+\draw (sig) -- (5.6,2.4) node[op amp, noinv input up, anchor=+](ob){};
+\draw (ob.-) |- ++(0,-0.6) node[below,font=\scriptsize,align=center]{OPA2134\\ gain 35};
 \draw (ob.out) -- ++(0.4,0) node[right]{ADC};
 \draw (ref) -- ++(0,-0.4) node[below,font=\scriptsize]{\SI{1.65}{V} ref};
-\node[align=center,font=\scriptsize,text=blue!60!black] at (1.6,-1.2) {$R_{\rm loop}=R_c+R_{\rm load}$;\\ DAQ reads $\varepsilon\,R_{\rm load}/(R_c+R_{\rm load})$};
+\node[align=center,font=\scriptsize,text=blue!60!black] at (1.4,-1.35) {$R_{\rm loop}=R_c+R_{\rm load}$;\\ DAQ reads $\varepsilon\,R_{\rm load}/(R_c+R_{\rm load})$;\\ predicted $\gamma_{\rm em}=c/(R_c+R_{\rm load})$};
 \end{scope}
 \end{circuitikz}
 \end{document}
