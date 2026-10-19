@@ -71,7 +71,7 @@ Total (USD): $42.57
 
 # notes
 Muino serial plotter was mostly used to display the information, it is available as a Visual Studio Code extension.
-A custom serial plotter was also made for this project by Hardyesh Kumar. It includes an extra post signal conditioning step called a **butterworth** filter.
+A custom serial plotter was also made for this project by Hardaysh Kumar. It includes an extra post signal conditioning step called a **butterworth** filter.
 
 
 Made with ❤️ by Umer
