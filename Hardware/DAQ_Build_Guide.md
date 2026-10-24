@@ -15,7 +15,6 @@ Without noise-reduction measures, a constant input produces readings that jump a
 
 Most of the noise reduction is built in to the hardware and code. Keep all the wires short, the decoupling capacitors close to the pins, and ensure that the USB cable used to power the Raspberry Pi Pico has its +5 V bus cut off, and is instead powered through an external battery or power adapter. <br/>
 
-<img width="566" height="835" alt="Screenshot from 2026-08-20 10-46-59" src="https://github.com/user-attachments/assets/75c1febf-af37-46eb-966a-4b9a36e2072a" />
 
 [DAQ_electric_damp.pdf](Schematics/DAQ_electric_damp.pdf)
 

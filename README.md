@@ -10,7 +10,7 @@ DAQ's timebase, and the mechanical damping that was actually measured.
 
 Author: Hassan Tariq Malik ([ORCID 0009-0001-3749-090X](https://orcid.org/0009-0001-3749-090X))  
 Contributors: Umer Farooq (DAQ firmware and schematics), Hardaysh Kumar (live serial plotter)  
-The Black Hole Science Internship Programme 2026, Islamabad  
+The Black Hole Science Lab, Islamabad  
 Research supervisors: M. Sanan Qureshi, Dr Sadia Manzoor (COMSATS University Islamabad), Dr Pervez Hoodbhoy
 
 ## Quick start
@@ -162,7 +162,7 @@ the live plotter at the time.
 | Field at the coil (Hall probe) | 11 G |
 | Magnet–coil centre distance at rest | 6 cm |
 | Coil 1 | R_c = 15.2 Ω, inner diameter ≈ 5.6 cm, winding height ≈ 4 cm, ≈ 550 turns (estimated from the EMF; 430–810 from the resistance) |
-| Spring constants (force–extension slope) | 16.578 N/m and 19.438 N/m |
+| Spring constants (force–extension slope) | 16.578 N/m and 19.438 N/m. The measured frequency ratio (2.08/1.86 Hz = 1.118) fits only if the two labels were swapped (spring 1 ≈ 19.438, spring 2 ≈ 16.578; predicted ratio 1.083); even then both frequencies are 4–7% below the static-k prediction |
 | DAQ gain, input range, input step | 35, ±47 mV, 23.647 µV |
 | Amplifier input bias resistor R5 | 1 MΩ (the only path closing the coil loop) |
 
@@ -174,7 +174,7 @@ the live plotter at the time.
 - **Rails and clamps.** The ±15 V op-amp output can reach about ±13.5 V and drive the ADC pin through R6 = 1 kΩ and silicon diodes. Use a single-supply rail-to-rail op-amp (3.3 V), BAT54S Schottky clamps and R6 ≥ 4.7 kΩ.
 - **R3.** The schematic says 34 kΩ (G = 35); the BOM says 35 kΩ (G = 36). Measure G with a known 10 mV input.
 - **Scale constants.** Logged data sit on a 23.647 µV/code lattice; the repo constants (3.3, 4095, 35) give 23.025 µV. Commit the flashed firmware. Using LSB = 3.3/4096/35 = 23.019 µV, published EMF is about 2.7% high.
-- **Committed vs flashed firmware.** The data were taken with `Output_Interval = 500` µs (2 kS/s nominal, as the raw `time_us` column shows); the committed `main.cpp` has 1000.
+- **Committed vs flashed firmware.** The original flashed `.cpp` was not kept. `main.cpp` has been set to the `Output_Interval = 500` µs (2 kS/s nominal) used for the data, as the raw `time_us` column shows; its ADC scale constants still differ from the flashed build (see Scale constants).
 - **ADC DNL.** RP2040-E11 gives DNL spikes near codes 512, 1536, 2560 and 3584. Check code histograms or exclude those codes.
 
 ### Corrected sampling loop
@@ -205,7 +205,7 @@ All of these were found after the data were taken. The analysis uses the logged 
 - Code and hardware: MIT licence (see `LICENSE`).
 - Data: CC BY 4.0.
 
-Releases are archived on Zenodo. Version v1.0: Malik, H. T. (2026). *Electromagnetic-Damping-Research: Data, firmware, hardware and analysis code* (Version v1.0) [Computer software]. Zenodo. https://doi.org/10.5281/zenodo.23448904
+Releases are archived on Zenodo: v1.0 (https://doi.org/10.5281/zenodo.23448904) and v1.1 (https://doi.org/10.5281/zenodo.23455570). Cite as: Malik, H. T. (2026). *Electromagnetic-Damping-Research: Data, firmware, hardware and analysis code* [Computer software]. Zenodo.
 
 If you use this repository, please also cite the paper:
 
