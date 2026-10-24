@@ -9,7 +9,7 @@ resistor, so the 1/R hypothesis could not be tested; the repository documents th
 DAQ's timebase, and the mechanical damping that was actually measured.
 
 Author: Hassan Tariq Malik ([ORCID 0009-0001-3749-090X](https://orcid.org/0009-0001-3749-090X))  
-Contributors: Umer Farooq (DAQ firmware and schematics), Hardaysh Kumar (live serial plotter)  
+Contributors: Umer Farooq (DAQ hardware, firmware and schematics; data collection), Hardaysh Kumar (video tracking, live serial plotter)  
 The Black Hole Science Lab, Islamabad  
 Research supervisors: M. Sanan Qureshi, Dr Sadia Manzoor (COMSATS University Islamabad), Dr Pervez Hoodbhoy
 
@@ -162,7 +162,7 @@ the live plotter at the time.
 | Field at the coil (Hall probe) | 11 G |
 | Magnet–coil centre distance at rest | 6 cm |
 | Coil 1 | R_c = 15.2 Ω, inner diameter ≈ 5.6 cm, winding height ≈ 4 cm, ≈ 550 turns (estimated from the EMF; 430–810 from the resistance) |
-| Spring constants (force–extension slope) | 16.578 N/m and 19.438 N/m. The measured frequency ratio (2.08/1.86 Hz = 1.118) fits only if the two labels were swapped (spring 1 ≈ 19.438, spring 2 ≈ 16.578; predicted ratio 1.083); even then both frequencies are 4–7% below the static-k prediction |
+| Spring constants (force–extension slope) | 16.578 N/m and 19.438 N/m. The measured frequency ratio (2.08/1.86 Hz = 1.118) is closer to the prediction if the two labels were swapped (spring 1 ≈ 19.438, spring 2 ≈ 16.578; predicted ratio 1.083, vs 0.924 unswapped); even then both frequencies are 4–7% below the static-k prediction |
 | DAQ gain, input range, input step | 35, ±47 mV, 23.647 µV |
 | Amplifier input bias resistor R5 | 1 MΩ (the only path closing the coil loop) |
 
@@ -205,11 +205,11 @@ All of these were found after the data were taken. The analysis uses the logged 
 - Code and hardware: MIT licence (see `LICENSE`).
 - Data: CC BY 4.0.
 
-Releases are archived on Zenodo (all versions: https://doi.org/10.5281/zenodo.23448903), including v1.0 (https://doi.org/10.5281/zenodo.23448904) and v1.1 (https://doi.org/10.5281/zenodo.23455570). Cite as: Malik, H. T. (2026). *Electromagnetic-Damping-Research: Data, firmware, hardware and analysis code* [Computer software]. Zenodo.
+Releases are archived on Zenodo (all versions: https://doi.org/10.5281/zenodo.23448903), including v1.0 (https://doi.org/10.5281/zenodo.23448904), v1.1 (https://doi.org/10.5281/zenodo.23455570) and v1.2 (https://doi.org/10.5281/zenodo.23614958). Cite as: Malik, H. T. (2026). *Electromagnetic-Damping-Research: Data, firmware, hardware and analysis code* [Computer software]. Zenodo.
 
 If you use this repository, please also cite the paper:
 
-> Malik, H. T. (2026). *Coil-circuit impedance and sampling-clock errors in a microcontroller-based electromagnetic damping experiment* [Manuscript in preparation].
+> Malik, H. T. (2026). *Coil-circuit impedance and sampling-clock errors in a microcontroller-based electromagnetic damping experiment* [Manuscript submitted for publication].
 
 An earlier version of the paper, titled *Electromagnetic damping: A closer look at a contactless braking system*, is available as a preprint at https://doi.org/10.5281/zenodo.23449036.
 

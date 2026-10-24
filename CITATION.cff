@@ -11,6 +11,6 @@ authors:
     email: hassantariq102938@gmail.com
 repository-code: "https://github.com/smash09x/Electromagnetic-Damping-Research"
 license: MIT
-version: "v1.2"
+version: "v1.3"
 date-released: "2026-10-24"
 keywords: [electromagnetic induction, damping, Lenz's law, data acquisition, Raspberry Pi Pico, physics education]
