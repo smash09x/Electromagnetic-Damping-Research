@@ -4,7 +4,7 @@
 #define BUTTON_PIN 18
 #define SWITCH_PIN 27
 
-const int Sample_Interval = 10; //take 100k samples every second //might need to reduce this dowm to a stable 50k samples (Sample_Interval = 20) if the output is missing ticks
+const int Sample_Interval = 10; //take 100k samples every second //might need to reduce this down to a stable 50k samples (Sample_Interval = 20) if the output is missing ticks
 const int Output_Interval = 1000; //output only 1k of those samples every second
 const int Max_Samples = 60000; // 60 seconds max limit since array needs to have a max size //you CAN push this to 90 seconds if you want
 const int Oversample_Factor = Output_Interval/Sample_Interval;

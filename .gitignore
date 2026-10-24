@@ -1,2 +1,5 @@
 __pycache__/
 Code/Analysis/out/
+*.aux
+*.log
+*.synctex.gz

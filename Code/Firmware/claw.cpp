@@ -1,4 +1,4 @@
-//this claw uses a seperate esp32 rather than the pi pico
+//this claw uses a separate esp32 rather than the pi pico
 
 #include <Arduino.h>
 #include <ESP32Servo.h>
@@ -38,10 +38,10 @@ void loop() {
     clawIsClosed = !clawIsClosed; 
 
     if (clawIsClosed) {
-      Serial.println("OPENING");
+      Serial.println("CLOSING");
       clawServo.write(CLAW_CLOSE_ANGLE);
     } else {
-      Serial.println("CLOSING");
+      Serial.println("OPENING");
       clawServo.write(CLAW_OPEN_ANGLE); //might want to change the speed here :D
     }
 

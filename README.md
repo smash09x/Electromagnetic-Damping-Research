@@ -9,11 +9,13 @@ resistor, so the 1/R hypothesis could not be tested; the repository documents th
 DAQ's timebase, and the mechanical damping that was actually measured.
 
 Author: Hassan Tariq Malik ([ORCID 0009-0001-3749-090X](https://orcid.org/0009-0001-3749-090X))  
-Contributors: Umer Farooq (DAQ firmware and schematics), Hardaysh Kumar (live serial plotter)
-The Black Hole Science Internship Programme 2026, Islamabad
+Contributors: Umer Farooq (DAQ firmware and schematics), Hardaysh Kumar (live serial plotter)  
+The Black Hole Science Internship Programme 2026, Islamabad  
 Research supervisors: M. Sanan Qureshi, Dr Sadia Manzoor (COMSATS University Islamabad), Dr Pervez Hoodbhoy
 
 ## Quick start
+
+Requires Python ≥ 3.11 (tested on 3.13).
 
 ```bash
 pip install -r Code/requirements.txt
@@ -93,9 +95,9 @@ Code/
     figures.py                 figures
     check_video_clocks.py      ffprobe frame-clock check; needs the original .mp4 files (not run by run_all.py)
 Hardware/
-  Schematics/                  KiCad schematics (DAQ, claw); as-built vs corrected circuit; signal-chain diagram
+  Schematics/                  KiCad schematic exports (PDF: DAQ, claw); as-built vs corrected circuit; signal-chain diagram
   Photos/                      apparatus, coils and DAQ board
-  DAQ_Build_Guide.md           build notes and bill of materials (US$42.57)
+  DAQ_Build_Guide.md           build notes and bill of materials (US$45.56)
 ```
 
 ## Expected headline output
@@ -128,7 +130,7 @@ loop was open; the paper reports them only in an appendix.
 several captures, each opened by `STARTING CAPTURE...` and `BUTTON RELEASED, DUMPING DATA...` and
 closed by `DONE.`. The analysis uses the longest capture. Each data line is `time_us,emf_uV`:
 
-- `time_us`: nominal time, computed by the firmware as sample index × 500 µs. Multiply by s = 1.261 for
+- `time_us`: nominal time, computed by the firmware as sample index × 500 µs. Multiply by s = 1.2613 for
   true time.
 - `emf_uV`: coil EMF referred to the amplifier input, in µV. Values sit on a 23.647 µV lattice, which is
   2.7% coarser than the published firmware constants give (see Known issues).
@@ -166,12 +168,13 @@ the live plotter at the time.
 
 ## Known issues and recommended fixes
 
-- **Open-loop coil.** The coil returns only through R5 (1 M) to the 1.65 V node, so the loop current is about 16 nA and a series R_ext does nothing. Fix: put R_load across the coil terminals (Kelvin connection), or feed the coil into a transimpedance input (coil and R_ext between 1.65 V and the inverting input, R_f in feedback).
-- **Timebase.** The loop cannot sustain 10 us, so the real block period is about 1.26x the nominal 500 us. Do not write `t = i*Output_Interval`. Record `micros()` per block, or use RP2040 free-running ADC with DMA at a fixed `adc_set_clkdiv`. Check with mains hum (50 Hz should appear at 50 Hz).
-- **Truncating average.** `tempStorage/Oversample_Factor` is integer division, so resolution stays at 1 LSB with a -0.5 LSB bias. Store the 32-bit sum, or divide in float.
-- **Rails and clamps.** The +/-15 V op-amp output can reach about +/-13.5 V and drive the ADC pin through R6 = 1 k and silicon diodes. Use a single-supply rail-to-rail op-amp (3.3 V), BAT54S Schottky clamps and R6 >= 4.7 k.
-- **R3.** The schematic says 34 k (G = 35); the BOM says 35 k (G = 36). Measure G with a known 10 mV input.
-- **Scale constants.** Logged data sit on a 23.647 uV/code lattice; the repo constants (3.3, 4095, 35) give 23.025 uV. Commit the flashed firmware. Using LSB = 3.3/4096/35 = 23.019 uV, published EMF is about 2.7% high.
+- **Open-loop coil.** The coil returns only through R5 (1 MΩ) to the 1.65 V node, so the loop current is about 16 nA and a series R_ext does nothing. Fix: put R_load across the coil terminals (Kelvin connection), or feed the coil into a transimpedance input (coil and R_ext between 1.65 V and the inverting input, R_f in feedback).
+- **Timebase.** The loop cannot sustain 10 µs, so the real block period is about 1.26× the nominal 500 µs. Do not write `t = i*Output_Interval`. Record `micros()` per block, or use RP2040 free-running ADC with DMA at a fixed `adc_set_clkdiv`. Check with mains hum (50 Hz should appear at 50 Hz).
+- **Truncating average.** `tempStorage/Oversample_Factor` is integer division, so resolution stays at 1 LSB with a −0.5 LSB bias. Store the 32-bit sum, or divide in float.
+- **Rails and clamps.** The ±15 V op-amp output can reach about ±13.5 V and drive the ADC pin through R6 = 1 kΩ and silicon diodes. Use a single-supply rail-to-rail op-amp (3.3 V), BAT54S Schottky clamps and R6 ≥ 4.7 kΩ.
+- **R3.** The schematic says 34 kΩ (G = 35); the BOM says 35 kΩ (G = 36). Measure G with a known 10 mV input.
+- **Scale constants.** Logged data sit on a 23.647 µV/code lattice; the repo constants (3.3, 4095, 35) give 23.025 µV. Commit the flashed firmware. Using LSB = 3.3/4096/35 = 23.019 µV, published EMF is about 2.7% high.
+- **Committed vs flashed firmware.** The data were taken with `Output_Interval = 500` µs (2 kS/s nominal, as the raw `time_us` column shows); the committed `main.cpp` has 1000.
 - **ADC DNL.** RP2040-E11 gives DNL spikes near codes 512, 1536, 2560 and 3584. Check code histograms or exclude those codes.
 
 ### Corrected sampling loop

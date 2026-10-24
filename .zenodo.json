@@ -21,7 +21,7 @@
       "type": "Other"
     }
   ],
-  "license": "MIT",
+  "license": "mit",
   "keywords": [
     "electromagnetic induction",
     "damping",
@@ -38,5 +38,5 @@
       "scheme": "doi"
     }
   ],
-  "version": "v1.1"
+  "version": "v1.2"
 }
