@@ -64,7 +64,7 @@ Data/
     frame_times/               true time of every video frame (ffprobe); the tracks assume even spacing
   Results/                     everything run_all.py produces
     final_table.csv            per-run γ, SE, Q, f and initial EMF (Table A1)
-    final_stats.json           means, estimator comparison, 1/R fit, divider check, video check
+    final_stats.json           means, estimator comparison, 1/R fit, divider check
     clock_calibration.json     mains-hum frequency per run, clock factor s
     decay_halves.json          early- vs late-half decay rates
     video_analysis.json        video frequencies, clock factor from video, decay of the motion (Table A2)

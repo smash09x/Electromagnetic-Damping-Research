@@ -5,7 +5,7 @@ Data/Video/VID-*.csv               time_s, vertical_distance_m, tracked frame by
 Data/Video/frame_times/VID-*.csv   the true presentation time of every frame, read with ffprobe from the
                                    original .mp4 files by check_video_clocks.py.
 The videos (WhatsApp copies) have a variable frame rate, so the even-spacing assumption puts five tracks
-0.7-2.6 % off in frequency. Every track is therefore fitted against its true frame times.
+0.7-2.9 % off in frequency. Every track is therefore fitted against its true frame times.
 
 Model (nonlinear least squares, window = 1.5 s after release to 1.5 s before the end):
     y(t) = A exp(-gamma t) cos(omega t + phi) + c0 + c1 t
@@ -70,9 +70,9 @@ for sp in (1, 2):
     rr = [r for r in rows if r["spring"] == sp]; ok = [r for r in rr if r["passes_tracking_cut"]]
     f = np.array([r["f"] for r in rr]); fn = np.array([r["f_even_spacing"] for r in rr])
     g = np.array([r["gamma"] for r in ok]); el = np.array([r["early"] / r["late"] for r in ok])
-    f_daq_nominal = st[f"S{sp}"]["f_true_mean"] * S_HUM          # DAQ frequency on the firmware's timebase
     fmed = float(np.median(f)); fse = boot_median(f)
     fd = np.array([r["f"] for r in daq if r["sp"] == f"S{sp}" and r["R"] < 1e5])   # true-time DAQ frequencies
+    f_daq_nominal = float(fd.mean()) * S_HUM                      # DAQ frequency on the firmware's timebase (unrounded)
     daq_rel = float(fd.std(ddof=1) / np.sqrt(len(fd)) / fd.mean())
     out[f"spring{sp}"] = dict(n=len(rr), n_pass=len(ok), passing=[r["video"] for r in ok],
         f_video_median=fmed, f_video_se_boot=fse,

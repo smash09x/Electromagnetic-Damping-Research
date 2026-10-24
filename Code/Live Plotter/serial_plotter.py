@@ -1,6 +1,7 @@
 # this is the final code for voltage time graph function
 import matplotlib.pyplot as plt
 import numpy as np
+import sys
 import serial 
 #returns the numpy array for plotting
 def ConvertIntoArray(raw_list: list):
@@ -11,10 +12,7 @@ def ConvertIntoArray(raw_list: list):
             try:
                 temp_line= line.strip().split(",") # split returns a list with the word being the element 
                 x0 = float(temp_line[0])/1000
-                # y0 = (float(temp_line[1])3.3/((2*12)-1))/1000 #gives the 2nd element in the list
-                y0 =((float(temp_line[1]))/4095)*3.3 
-                gain= 35
-                yout= ((y0-1.65)/gain)*1000 #this our voltage :)
+                yout = float(temp_line[1])/1000 # firmware already sends input-referred µV; convert to mV
                 y.append(yout)
                 x.append(x0)
             except ValueError:
@@ -35,8 +33,9 @@ def RecordData(micro_controller:serial.Serial):
         micro_controller.close()
     return raw_list
 
-if(_name=="main_"):
-    Com= serial.Serial("/dev/ttyACM0", 115200, timeout=3) #the timeout tells the communication channel to wait for 3 seconds
+if __name__ == "__main__":
+    port = sys.argv[1] if len(sys.argv) > 1 else "/dev/ttyACM0" # e.g. COM3 on Windows
+    Com= serial.Serial(port, 115200, timeout=3) #the timeout tells the communication channel to wait for 3 seconds
     raw_data= RecordData(Com)
     t,v = ConvertIntoArray(raw_data)
     plt.title("Volt-Time graph, 0 OHMS", size= 25, fontweight= "bold")

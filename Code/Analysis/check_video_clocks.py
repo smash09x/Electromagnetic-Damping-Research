@@ -9,7 +9,7 @@ For every video it
   * checks that the tracking CSV has one row per frame and spans the same duration,
   * reports the spread of frame intervals: the WhatsApp copies have a variable frame rate
     (intervals of ~33 and ~36 ms mixed), which is why the even spacing assumed by the tracking CSVs
-    puts some tracks 0.7-2.6 % off in frequency. video_analysis.py uses the true frame times.
+    puts some tracks 0.7-2.9 % off in frequency. video_analysis.py uses the true frame times.
 Writes Data/Results/video_clock_check.json. Needs ffprobe (FFmpeg) on the PATH.
 """
 import os, sys, glob, json, subprocess, numpy as np

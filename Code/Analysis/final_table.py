@@ -30,7 +30,7 @@ for sp, R, s, p in runs():
     env = np.abs(hilbert(xf)); ds = int(round(fs / (f0*S))); m = (t > ta) & (t < te)
     th, eh = t[m][::ds], np.log(env[m][::ds])
     g, gse, pp = lin(th, eh); gb = bboot(th, eh)
-    # local gamma vs fundamental amplitude (4-cycle windows) -> gamma at reference amplitude
+    # local gamma vs fundamental amplitude (8-cycle windows) -> gamma at reference amplitude
     W = 8; loc = [(np.exp(eh[i:i+W].mean()), lin(th[i:i+W], eh[i:i+W])[0]) for i in range(0, len(th)-W, 2)]
     loc = np.array(loc)
     # eps_rms over first 3 cycles (authors' definition, sample-count based -> clock independent)

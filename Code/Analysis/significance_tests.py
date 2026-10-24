@@ -39,7 +39,6 @@ out['S1_cfit']=dict(model='gamma = gamma0 + c/(Rc+Rext), OLS (equal weights = ru
     gamma_em_as_built_1e3=c_pred/(1e6+RC)*1e3, **res)
 print(json.dumps(out['S1_cfit'],indent=1))
 # --- divider
-from scipy.signal import butter,filtfilt
 r2=[r for r in s1 if r['R']>1e5][0]; lo=[r for r in s1 if r['R']<1e5]
 V=np.array([r['eps'] for r in lo]); H=np.array([r['h21'] for r in lo])
 # filtered pre-release noise (same filter as eps_rms) for each run

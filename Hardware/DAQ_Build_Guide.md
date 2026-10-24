@@ -45,7 +45,7 @@ A neodymium magnet is attached to a spring. An aluminum claw is used to release 
 | **Active Noise Floor Uncertainty** | ±0.034 mV (±34 μV) | Measured noise floor |
 | **Signal-to-Noise Ratio (SNR)** | ~62.84 dB | 20 * log10(Voltage Ceiling / Noise Floor) |
 
-*The logged data actually sit on a 23.647 µV lattice (2.7% coarser); see Known issues in the main README.
+*The logged data actually sit on a 23.647 µV lattice (2.7% coarser); see Known issues in the main README. The noise floor above is a bench figure; the pre-release noise in the experiment's runs has a median of 45 µV (see `Data/Results/supporting_numbers.json`).
 
 # BOM (Bill Of Materials)
 |Item                   |Qty.|Price (USD)|Link                                                                                                                              |
