@@ -61,7 +61,7 @@ void loop() {
     //sending data through serial once button was released
     Serial.flush();
     Serial.println("BUTTON RELEASED, DUMPING DATA...");
-    delay(10); // gemini told me to add this // apparently it needs a little time so it can remove this string from the queue so it can start outputting the data
+    delay(10); // short pause so the serial queue clears this string before data output starts
 
     //converting from steps to volts, change these accordingly
     const float  gain = 35.0; //change this accordingly depending on how large your emf produced is, ensuring that the (EMF produced * gain) + 1.65  does not exceed 0-3.3v

@@ -8,7 +8,8 @@ data-acquisition system (DAQ). The coil circuit turned out to be closed only thr
 resistor, so the 1/R hypothesis could not be tested; the repository documents that diagnosis, a second error in the
 DAQ's timebase, and the mechanical damping that was actually measured.
 
-Author: Hassan Tariq Malik ([ORCID 0009-0001-3749-090X](https://orcid.org/0009-0001-3749-090X)) · Co-authors: Hardaysh Kumar, Umer Farooq
+Author: Hassan Tariq Malik ([ORCID 0009-0001-3749-090X](https://orcid.org/0009-0001-3749-090X))  
+Contributors: Umer Farooq (DAQ firmware and schematics), Hardaysh Kumar (live serial plotter)
 The Black Hole Science Internship Programme 2026, Islamabad
 Research supervisors: M. Sanan Qureshi, Dr Sadia Manzoor (COMSATS University Islamabad), Dr Pervez Hoodbhoy
 
@@ -201,11 +202,11 @@ All of these were found after the data were taken. The analysis uses the logged 
 - Code and hardware: MIT licence (see `LICENSE`).
 - Data: CC BY 4.0.
 
-Releases are archived on Zenodo. Version v1.0: Malik, H. T., Kumar, H., & Farooq, U. (2026). *Electromagnetic-Damping-Research: Data, firmware, hardware and analysis code* (Version v1.0) [Computer software]. Zenodo. https://doi.org/10.5281/zenodo.23448904
+Releases are archived on Zenodo. Version v1.0: Malik, H. T. (2026). *Electromagnetic-Damping-Research: Data, firmware, hardware and analysis code* (Version v1.0) [Computer software]. Zenodo. https://doi.org/10.5281/zenodo.23448904
 
 If you use this repository, please also cite the paper:
 
-> Malik, H. T., Kumar, H., & Farooq, U. (2026). *Coil-circuit impedance and sampling-clock errors in a microcontroller-based electromagnetic damping experiment* [Manuscript in preparation].
+> Malik, H. T. (2026). *Coil-circuit impedance and sampling-clock errors in a microcontroller-based electromagnetic damping experiment* [Manuscript in preparation].
 
 An earlier version of the paper, titled *Electromagnetic damping: A closer look at a contactless braking system*, is available as a preprint at https://doi.org/10.5281/zenodo.23449036.
 

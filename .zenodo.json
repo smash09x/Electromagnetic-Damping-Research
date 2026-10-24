@@ -1,20 +1,24 @@
 {
   "title": "Electromagnetic-Damping-Research: Data, firmware, hardware and analysis code",
   "upload_type": "software",
-  "description": "Raw DAQ records, phone-video tracks with true frame times, DAQ firmware and schematics, and the analysis code that reproduces every number, table and figure in the paper 'Coil-circuit impedance and sampling-clock errors in a microcontroller-based electromagnetic damping experiment' (Malik, Kumar and Farooq, 2026; earlier preprint version: https://doi.org/10.5281/zenodo.23449036). Run Code/Analysis/run_all.py. Code and hardware are released under the MIT licence; the data are released under CC BY 4.0.",
+  "description": "Raw DAQ records, phone-video tracks with true frame times, DAQ firmware and schematics, and the analysis code that reproduces every number, table and figure in the paper 'Coil-circuit impedance and sampling-clock errors in a microcontroller-based electromagnetic damping experiment' (Malik, 2026; earlier preprint version: https://doi.org/10.5281/zenodo.23449036). Run Code/Analysis/run_all.py. Code and hardware are released under the MIT licence; the data are released under CC BY 4.0.",
   "creators": [
     {
       "name": "Malik, Hassan Tariq",
       "orcid": "0009-0001-3749-090X",
       "affiliation": "The Black Hole Science Lab, Islamabad"
+    }
+  ],
+  "contributors": [
+    {
+      "name": "Farooq, Umer",
+      "affiliation": "The Black Hole Science Lab, Islamabad",
+      "type": "Other"
     },
     {
       "name": "Kumar, Hardaysh",
-      "affiliation": "The Black Hole Science Lab, Islamabad"
-    },
-    {
-      "name": "Farooq, Umer",
-      "affiliation": "The Black Hole Science Lab, Islamabad"
+      "affiliation": "The Black Hole Science Lab, Islamabad",
+      "type": "Other"
     }
   ],
   "license": "MIT",

@@ -7,10 +7,6 @@ authors:
     given-names: Hassan Tariq
     orcid: "https://orcid.org/0009-0001-3749-090X"
     email: hassantariq102938@gmail.com
-  - family-names: Kumar
-    given-names: Hardaysh
-  - family-names: Farooq
-    given-names: Umer
 repository-code: "https://github.com/smash09x/Electromagnetic-Damping-Research"
 license: MIT
 version: "v1.1"
