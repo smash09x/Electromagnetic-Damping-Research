@@ -1,6 +1,6 @@
 # Coil-circuit impedance and sampling-clock errors in a microcontroller-based electromagnetic damping experiment
 
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.23448904.svg)](https://doi.org/10.5281/zenodo.23448904)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.23448903.svg)](https://doi.org/10.5281/zenodo.23448903)
 
 Data and code for a study of electromagnetic damping in a magnet–spring oscillator. It set out to test whether
 the damping falls as 1/R when resistance is added to the coil circuit, using a low-cost Raspberry Pi Pico
@@ -205,7 +205,7 @@ All of these were found after the data were taken. The analysis uses the logged 
 - Code and hardware: MIT licence (see `LICENSE`).
 - Data: CC BY 4.0.
 
-Releases are archived on Zenodo: v1.0 (https://doi.org/10.5281/zenodo.23448904) and v1.1 (https://doi.org/10.5281/zenodo.23455570). Cite as: Malik, H. T. (2026). *Electromagnetic-Damping-Research: Data, firmware, hardware and analysis code* [Computer software]. Zenodo.
+Releases are archived on Zenodo (all versions: https://doi.org/10.5281/zenodo.23448903), including v1.0 (https://doi.org/10.5281/zenodo.23448904) and v1.1 (https://doi.org/10.5281/zenodo.23455570). Cite as: Malik, H. T. (2026). *Electromagnetic-Damping-Research: Data, firmware, hardware and analysis code* [Computer software]. Zenodo.
 
 If you use this repository, please also cite the paper:
 

@@ -2,6 +2,7 @@ cff-version: 1.2.0
 message: "If you use this repository, please cite it as below."
 title: "Electromagnetic-Damping-Research: Data, firmware, hardware and analysis code"
 type: software
+doi: "10.5281/zenodo.23448903"
 authors:
   - family-names: Malik
     given-names: Hassan Tariq
