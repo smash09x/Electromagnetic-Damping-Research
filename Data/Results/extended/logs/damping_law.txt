@@ -1,0 +1,18 @@
+S1 WA0011 A0 2.12cm | exp g 11.45 rms 1.04 | drag g0 5.15 beta 7.73+-5.45 dAIC -0 | coulomb g0 17.74 delta -5.08+-3.53 dAIC -0
+S1 WA0012 A0 2.23cm | exp g 11.01 rms 1.08 | drag g0 6.06 beta 6.03+-5.58 dAIC 1 | coulomb g0 15.81 delta -3.91+-3.68 dAIC 1
+S1 WA0030 A0 2.17cm | exp g 11.23 rms 0.67 | drag g0 8.19 beta 3.72+-3.39 dAIC 1 | coulomb g0 14.48 delta -2.63+-2.21 dAIC 1
+S1 WA0031 A0 2.20cm | exp g 11.86 rms 0.74 | drag g0 5.60 beta 7.68+-4.15 dAIC -2 | coulomb g0 18.32 delta -5.22+-2.70 dAIC -2
+S1 WA0033 A0 2.29cm | exp g 11.73 rms 0.94 | drag g0 7.06 beta 5.68+-5.07 dAIC 1 | coulomb g0 16.62 delta -3.99+-3.35 dAIC 1
+S1 WA0034 A0 1.85cm | exp g 11.00 rms 1.23 | drag g0 13.86 beta -3.45+-7.56 dAIC 2 | coulomb g0 8.53 delta 2.03+-5.14 dAIC 2
+S1 WA0042 A0 2.25cm | exp g 11.02 rms 1.11 | drag g0 2.67 beta 10.15+-6.20 dAIC -1 | coulomb g0 19.48 delta -6.91+-4.10 dAIC -1
+S2 WA0035 A0 2.46cm | exp g 11.70 rms 1.64 | drag g0 -1.87 beta 16.75+-8.29 dAIC -2 | coulomb g0 24.72 delta -10.47+-5.29 dAIC -2
+S2 WA0038 A0 0.09cm | exp g 9.15 rms 4.23 | drag g0 -19019.08 beta 738.03+-907.43 dAIC -156 | coulomb g0 -37.91 delta 41.84+-14.78 dAIC -11
+S2 WA0043 A0 2.83cm | exp g 11.80 rms 0.81 | drag g0 -0.67 beta 15.48+-3.40 dAIC -19 | coulomb g0 23.82 delta -9.61+-2.14 dAIC -17
+S1 drag model: g0 6.94 +- 3.50 (sd), beta@A0 5.36 +- 4.38 (sd, n=7), amplitude-dependent fraction at release 41%
+air-drag beta expected 1.06; measured/expected 4.9
+/home/claude/electromagnetic-damping-research/Code/Analysis/extended/damping_law.py:11: RuntimeWarning: overflow encountered in exp
+  e = np.exp(-g0*t); return g0*e/(g0+beta*(1-e)) if abs(beta) > 1e-12 else e
+/home/claude/electromagnetic-damping-research/Code/Analysis/extended/damping_law.py:11: RuntimeWarning: overflow encountered in multiply
+  e = np.exp(-g0*t); return g0*e/(g0+beta*(1-e)) if abs(beta) > 1e-12 else e
+/home/claude/electromagnetic-damping-research/Code/Analysis/extended/damping_law.py:11: RuntimeWarning: invalid value encountered in divide
+  e = np.exp(-g0*t); return g0*e/(g0+beta*(1-e)) if abs(beta) > 1e-12 else e

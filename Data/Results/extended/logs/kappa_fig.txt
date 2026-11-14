@@ -1,0 +1,1 @@
+spring-2 rest position is 0.72 cm above spring-1 rest; rms mismatch of the two kappa(z) curves over the overlap 3.0% (30 bins)

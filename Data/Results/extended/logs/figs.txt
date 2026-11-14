@@ -1,0 +1,1 @@
+S2 slope meas 22.2, model 20.9 per unit h21; S2 resid vs model mean -0.19 sd 0.23 (raw sd 0.95); S1 resid mean -0.10 sd 0.67 (raw sd 0.50)

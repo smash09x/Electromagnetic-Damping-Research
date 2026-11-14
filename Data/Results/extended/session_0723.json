@@ -1,0 +1,13 @@
+{
+ "n_daq": 12,
+ "gamma_emf_env_mean": 49.37906777062333,
+ "gamma_emf_env_sd": 0.8920397700836024,
+ "f_nominal_mean": 2.560338629252813,
+ "n_video": 7,
+ "f_video_mean": 2.0297339431600236,
+ "f_video_sd": 0.002973929439037123,
+ "gamma_video_mean": 51.20279591611041,
+ "gamma_video_sd": 0.8326940194466618,
+ "clock_factor": 1.2614158805792592,
+ "clock_factor_se": 0.0006985553446273
+}

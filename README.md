@@ -94,6 +94,8 @@ Code/
     supporting_numbers.py      smaller numbers quoted in the paper (step, noise, turns, drag, 12.6 us/read)
     figures.py                 figures
     check_video_clocks.py      ffprobe frame-clock check; needs the original .mp4 files (not run by run_all.py)
+    extended/                  v2: forward model, simulated DAQ, coupling function, damping law, ADC error
+      run_extended.py          runs everything in this folder and writes Data/Results/extended/
 Hardware/
   Schematics/                  KiCad schematic exports (PDF: DAQ, claw); as-built vs corrected circuit; signal-chain diagram
   Photos/                      apparatus, coils and DAQ board
@@ -123,6 +125,54 @@ Running `run_all.py` on the data in this repository should give these values.
 `final_stats.json` also contains t, permutation and leave-one-out tests of the fit against the closed-loop
 prediction. Those compare the data with a circuit that was not built, so they do not by themselves show that the
 loop was open; the paper reports them only in an appendix.
+
+## Extended analysis (v2)
+
+`Code/Analysis/extended/run_extended.py` adds a forward model of the experiment, a simulated copy of the
+as-built DAQ, and three analyses that use only the recordings already in this repository plus one earlier
+session (23 July). Run it after `run_all.py`; it takes about half a minute and writes to
+`Data/Results/extended/`.
+
+```bash
+cd Code/Analysis/extended
+python run_extended.py
+```
+
+| Result | Value | File |
+|---|---|---|
+| Coupling function κ(z) = EMF / velocity at rest, spring 1 | 0.072 V s m⁻¹; shape repeats to 1.5% run to run; up and down strokes agree to 0.5% | `kappa_recon.json` |
+| κ(z), spring 2 against spring 1 (one height offset, 0.72 cm) | curves agree to 3.0% rms over the overlap | `kappa_measured.png` |
+| κ(z), 23 July session (12 runs) against 24 July | agree to 6.3% rms after a −0.55 cm offset | `kappa_recon.json` |
+| Predicted added decay rate with coil 1 shorted, spring 1 | 2.05 × 10⁻³ s⁻¹ at release, falling to 1.63 at small amplitude (18% to 14% of the video damping) | `kappa_recon.json` |
+| Point dipole at the stated 6 cm, second and third harmonic | predicted 0.52 and 0.15 of the fundamental; measured 0.33 and 0.054 | `validate.json` |
+| Effective coupling (two fitted numbers), EMF-envelope rate | predicted 12.08 (spring 1) and 13.26 (spring 2); measured 11.89 ± 0.50 and 13.49 ± 0.95 | `validate.json` |
+| Spring-2 run-to-run SD of the EMF-envelope rate | 0.95 raw, 0.23 after the modelled amplitude dependence | `sim_validation.png` |
+| Injection-recovery: quantisation, integer division, read noise | change the recovered rate by less than 0.01% | `inject.json` |
+| Injection-recovery: nominal timestamps | frequency 2.626 Hz (measured 2.6261); the hum correction recovers s to 2 parts in 10⁵ | `inject.json` |
+| Clock factor, 23 July session (100-read blocks, video against DAQ) | 1.2614 ± 0.0007 | `session_0723.json` |
+| The 52–55 Hz feature | the 20th and 21st harmonics of the oscillation (22nd and 23rd for spring 2) | `adc_nonlinearity.json` |
+| Level-dependent ADC error (RP2040-E11) | steps of −7.3 and −7.1 LSB, 516 and 510 codes either side of a +1.7 LSB step; independent halves correlate at r = 1.00 | `adc_inl.png` |
+| Decay law of the motion (spring-1 videos) | amplitude-dependent term 5.4 ± 1.7 (SE) × 10⁻³ s⁻¹ at release; dry friction has the wrong sign | `damping_law.json` |
+
+Three points change how the earlier numbers should be read.
+
+- **Geometry.** A point dipole 6 cm above the coil centre does not reproduce the recorded waveform, and no
+  dipole or finite-loop magnet model at any distance between 2.5 and 6 cm does. A rough reading of frames from the run videos puts
+  the magnet nearer than 6 cm and shows it reaching the mouth of the coil at the bottom of each swing. The
+  dipole-based turns estimate in `supporting_numbers.json` should therefore not be relied on. The prediction
+  of the shorted-coil effect never used the geometry: it comes from the measured EMF and the video amplitude,
+  and the amplitude was checked against the metre rule in the frames (4.8 cm peak to peak on the first swing).
+- **Mechanical damping is set by the apparatus.** On 23 July the same oscillator decayed at
+  (49.4 ± 0.9) × 10⁻³ s⁻¹, more than four times the 24 July rate, at a frequency 2.5% lower. The run videos
+  appear to show the joint between spring and cradle before and after it was reinforced with hot glue, which
+  is a candidate cause but not a tested one. The 23 July
+  series is used here for κ(z) and for the clock, not for damping.
+- **The DAQ's remaining flaws are measurable but harmless.** The ADC's step error produces a comb of high
+  harmonics a few µV high and shifts the fitted decay rate by 0.3%.
+
+`Data/Raw/session_2026-07-23/` holds the twelve DAQ dumps of that session (nominal spacing 1000 µs, 100-read
+blocks) and `Data/Video/session_2026-07-23/` the seven usable displacement tracks. The track labels 0 to 150
+are the values written on the original files; the coil loop was open in this session as well.
 
 ## Data dictionary
 
@@ -160,7 +210,7 @@ the live plotter at the time.
 |---|---|
 | Oscillating mass | 105 g (NdFeB cup magnet ≈ Ø41 × 7 mm with a Ø30 mm disc, string cradle) |
 | Field at the coil (Hall probe) | 11 G |
-| Magnet–coil centre distance at rest | 6 cm |
+| Magnet–coil centre distance at rest | 6 cm (nominal; the recorded waveform is not consistent with it, see Extended analysis) |
 | Coil 1 | R_c = 15.2 Ω, inner diameter ≈ 5.6 cm, winding height ≈ 4 cm, ≈ 550 turns (estimated from the EMF; 430–810 from the resistance) |
 | Spring constants (force–extension slope) | 16.578 N/m and 19.438 N/m. The measured frequency ratio (2.08/1.86 Hz = 1.118) is closer to the prediction if the two labels were swapped (spring 1 ≈ 19.438, spring 2 ≈ 16.578; predicted ratio 1.083, vs 0.924 unswapped); even then both frequencies are 4–7% below the static-k prediction |
 | DAQ gain, input range, input step | 35, ±47 mV, 23.647 µV |

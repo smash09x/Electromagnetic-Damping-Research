@@ -1,0 +1,7 @@
+ideal sampling, true timestamps            n= 1 gamma 12.076 +- 0.000  (x1.0618 of motion)  f 2.0819 (x1.0000)  s 1.00000 +- 0.00000  eps 16.17  [0s]
++ 12-bit quantisation, float average       n= 1 gamma 12.076 +- 0.000  (x1.0618 of motion)  f 2.0819 (x1.0000)  s 1.00000 +- 0.00000  eps 16.17  [0s]
++ integer-division average (no noise)      n= 1 gamma 12.076 +- 0.000  (x1.0618 of motion)  f 2.0819 (x1.0000)  s 1.00000 +- 0.00000  eps 16.17  [1s]
++ read noise 5 LSB and 7 uV hum            n=12 gamma 12.076 +- 0.000  (x1.0618 of motion)  f 2.0819 (x1.0000)  s 1.00000 +- 0.00000  eps 16.17  [3s]
++ nominal timestamps, uncorrected          n=12 gamma 15.367 +- 0.001  (x1.3511 of motion)  f 2.6263 (x1.2614)  s 1.00000 +- 0.00000  eps 16.17  [6s]
++ nominal timestamps, hum-corrected        n=12 gamma 12.183 +- 0.001  (x1.0712 of motion)  f 2.0822 (x1.0001)  s 1.26132 +- 0.00003  eps 16.17  [9s]
+truth: gamma_motion 11.373, f 2.0820, s 1.26130
